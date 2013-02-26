@@ -13,29 +13,7 @@ public class static_data {
 		
 		slownik.add(newRecord);
 	}
-	
-/*	private ArrayList<ArrayList<String>> newSet(ArrayList<String> nazwa, ArrayList<String> kolumny) {
 		
-		ArrayList<String> nazwaX = new ArrayList<String>();
-	    nazwaX.add("Typy kont");
-		
-	    ArrayList<String> kolumnyX = new ArrayList<String>();
-	    kolumnyX.add("Nazwa");
-	    kolumnyX.add("Opis");
-	    
-	    ArrayList<String> zapytanieX = new ArrayList<String>();
-	    zapytanieX.add("select name, description from account_types");
-	    
-	    ArrayList<ArrayList<String>> out = new ArrayList<ArrayList<String>>();
-	    
-	    out.add(nazwaX);
-	    out.add(kolumnyX);
-	    out.add(zapytanieX);
-		
-	    return zero;
-		
-	}*/
-	
 	
 	public static_data() {
 	

@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.*;
 import swing2swt.layout.BorderLayout;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -15,15 +16,13 @@ import org.eclipse.swt.events.SelectionAdapter;
 
 public class main_window {
 	private static Table dict_data;
-	private static Table new_dict_data;
 	private static TabFolder tabFolder;
 	private static Composite dict_data_comp;
 	private static Shell shell;
 	private static Point act_size = new Point(1116, 600);
-	private static Integer kaunt = 0;
-	private static Integer kaunt2 = 0;
-	private static ArrayList<Combo> arCombo = new ArrayList<Combo>();
-	private static ArrayList<TableEditor> arEditor = new ArrayList<TableEditor>();
+	private static Integer s;
+	private static ArrayList<Combo> arCombo;
+	private static ArrayList<TableEditor> arEditor;
 	private static static_data st = new static_data();
 
 	/**
@@ -31,6 +30,17 @@ public class main_window {
 	 * 
 	 * @param args
 	 */
+
+	private static void clearEditor() {
+
+		for (int d = 0; d < arCombo.size(); d++) {
+			arCombo.get(d).dispose();
+		}
+		for (int d = 0; d < arEditor.size(); d++) {
+			arEditor.get(d).dispose();
+		}
+	}
+
 	public static void draw_center() {
 		tabFolder = new TabFolder(shell, SWT.NONE);
 		tabFolder.setLayoutData(null);
@@ -43,7 +53,7 @@ public class main_window {
 
 		TabItem tbtmDictionaries = new TabItem(tabFolder, SWT.NONE);
 		tbtmDictionaries.setText("S³owniki");
-	
+
 		dict_data_comp = new Composite(tabFolder, SWT.NONE);
 
 		tbtmDictionaries.setControl(dict_data_comp);
@@ -54,24 +64,16 @@ public class main_window {
 		Composite combo_holder = new Composite(dict_data_comp, SWT.NONE);
 
 		final Combo cmb1 = new Combo(combo_holder, SWT.DROP_DOWN);
-		cmb1.setSize(new Point(dict_data_comp.getSize().x - 200, 23));
+		cmb1.setSize(new Point(dict_data_comp.getSize().x - 600, 23));
 
-	
 		for (int r = 0; r < st.slownik.size(); r++) {
-
 			cmb1.add(st.slownik.get(r).get(0).get(0));
-
 		}
 
 		dict_data = new Table(dict_data_comp, SWT.BORDER | SWT.FULL_SELECTION);
-		dict_data.setLayoutData(new RowData(dict_data_comp.getSize().x, 200));
+		dict_data.setLayoutData(new RowData(dict_data_comp.getSize().x, dict_data_comp.getSize().y - 200));
 		dict_data.setHeaderVisible(true);
 		dict_data.setLinesVisible(true);
-
-		new_dict_data = new Table(dict_data_comp, SWT.BORDER | SWT.FULL_SELECTION);
-		new_dict_data.setLinesVisible(true);
-		new_dict_data.setLayoutData(new RowData(dict_data_comp.getSize().x, 20));
-		new_dict_data.setHeaderVisible(false);
 
 		Composite buttons = new Composite(dict_data_comp, SWT.NONE);
 		buttons.setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -81,114 +83,112 @@ public class main_window {
 		btnUpdate.setText("Update");
 		btnUpdate.setEnabled(false);
 
+		final Button btnSave = new Button(buttons, SWT.NONE);
+		btnSave.setSize(60, 25);
+		btnSave.setText("Save");
+		btnSave.setEnabled(false);
+
 		final Button btnDiscard = new Button(buttons, SWT.NONE);
 		btnDiscard.setSize(60, 25);
 		btnDiscard.setText("Discard");
 		btnDiscard.setEnabled(false);
-
-		// label do wyswietlenie ze nacislem
-		final Label lblNewLabel_1 = new Label(dict_data_comp, SWT.NONE);
-		lblNewLabel_1.setLayoutData(new RowData(344, SWT.DEFAULT));
-
-		final Label lblNewLabel_2 = new Label(dict_data_comp, SWT.NONE);
-		lblNewLabel_2.setLayoutData(new RowData(344, SWT.DEFAULT));
-
-		// label do wyswietlenie ze nacislem
 
 		Listener updateBtnListener = new Listener() {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == btnUpdate) {
 
-					kaunt++;
-					lblNewLabel_1.setText("nacis³em update " + Integer.toString(kaunt)); // label do wyswietlenie ze nacislem
-																							
+					btnUpdate.setEnabled(false);
+					btnSave.setEnabled(true);
+					btnDiscard.setEnabled(true);
+					cmb1.setEnabled(false);
+
+					// edytor
+					arCombo = new ArrayList<Combo>();
+					arEditor = new ArrayList<TableEditor>();
+
+					// to przygotwuje odpowiednia ilosc combo z danymi i edytorw
+					// do nich
+					for (int z = 0; z < dict_data.getColumnCount(); z++) {
+						arCombo.add(new Combo(dict_data, SWT.NONE));
+						arCombo.get(z).add("item " + z);
+						arEditor.add(new TableEditor(dict_data));
+					}
+
+					s = dict_data.getSelectionIndex();
+					TableItem item = dict_data.getItem(s);
+
+					for (int w = 0; w < dict_data.getColumnCount(); w++) {
+						arCombo.get(w).setText(item.getText(w));
+						arEditor.get(w).grabHorizontal = true;
+						arEditor.get(w).grabVertical = true;
+						arEditor.get(w).setEditor(arCombo.get(w), item, w);
+
+					}
+
+					// koniec edytora
+
 				}
 			}
 		};
+
+		Listener saveBtnListener = new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				if (event.widget == btnSave) {
+
+					clearEditor();
+					btnUpdate.setEnabled(true);
+					btnSave.setEnabled(false);
+					btnDiscard.setEnabled(false);
+					cmb1.setEnabled(true);
+				}
+			}
+		};
+
 		Listener discardBtnListener = new Listener() {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == btnDiscard) {
 
-					kaunt2++; 
-					lblNewLabel_2.setText("nacis³em discard " + Integer.toString(kaunt2)); // label do wyswietlenie ze nacislem
-					btnUpdate.setEnabled(false);
+					clearEditor();
+					btnUpdate.setEnabled(true);
+					btnSave.setEnabled(false);
 					btnDiscard.setEnabled(false);
+					cmb1.setEnabled(true);
 				}
 			}
 		};
 
 		btnUpdate.addListener(SWT.Selection, updateBtnListener);
+		btnSave.addListener(SWT.Selection, saveBtnListener);
 		btnDiscard.addListener(SWT.Selection, discardBtnListener);
-
-		// dict_data.removeAll();
-		// new_dict_data.removeAll();
 
 		cmb1.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-
 				dict_data.removeAll();
-				new_dict_data.removeAll();
 
 				dict_data.setRedraw(false);
 				while (dict_data.getColumnCount() > 0) {
 					dict_data.getColumns()[0].dispose();
 				}
 
-				for (int a = 0; a < 
-						//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
-						st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
-						;
-
-						 a++) {
-
+				for (int a = 0; a < st.slownik.get(cmb1.getSelectionIndex()).get(1).size(); a++) {
 					TableColumn tblclmnNewColumn = new TableColumn(dict_data, SWT.NONE);
-					tblclmnNewColumn.setWidth((dict_data.getSize().x / 
-							//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
-							st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
-							) - 2);
-					tblclmnNewColumn.setText(
-							//st.slownik.get(cmb1.getSelectionIndex()).get(1).get(a+1)
-							st.slownik.get(cmb1.getSelectionIndex()).get(1).get(a)
-
-							);
-
+					tblclmnNewColumn.setWidth((dict_data.getSize().x / st.slownik.get(cmb1.getSelectionIndex()).get(1).size()) - 2);
+					tblclmnNewColumn.setText(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(a));
 				}
 				dict_data.setRedraw(true);
 
-				new_dict_data.setRedraw(false);
-				while (new_dict_data.getColumnCount() > 0) {
-					new_dict_data.getColumns()[0].dispose();
-				}
-
-				for (int a = 0; a < 
-						st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
-						//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
-						; a++) {
-
-					TableColumn newtblclmnNewColumn = new TableColumn(new_dict_data, SWT.NONE);
-					newtblclmnNewColumn.setWidth((new_dict_data.getSize().x / 
-							//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
-							st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
-							) - 2);
-
-				}
-				new_dict_data.setRedraw(true);
-
 				// -- polaczenie do bazy
 				db db_con = new db();
-				// pobranie danych o typach kont zwraca 2 kolumny i ilestam rekordow
-
-
+				
 				String[][] lista = db_con.get_data(
-						st.slownik.get(cmb1.getSelectionIndex()).get(2).get(0)		
-								,
-								st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
-								//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
+						st.slownik.get(cmb1.getSelectionIndex()).get(2).get(0), 
+						st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
 						);
 
 				for (int w = 0; w < lista.length; w++) {
@@ -196,82 +196,26 @@ public class main_window {
 					item.setText(lista[w]);
 				}
 
-				dict_data.addListener(SWT.Selection, new Listener() {
+				dict_data.addSelectionListener(new SelectionListener() {
+
 					@Override
-					public void handleEvent(Event e) {
-						TableItem[] selection = dict_data.getSelection();
-						new_dict_data.removeAll();
-						TableItem updated = new TableItem(new_dict_data, SWT.NONE);
-
-						for (int k = 0; k < 
-								//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
-								st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
-								; k++) {
-							updated.setText(k, selection[0].getText(k));
-							btnUpdate.setEnabled(false);
-							btnDiscard.setEnabled(false);
-
-						}
+					public void widgetDefaultSelected(SelectionEvent arg0) {
+						btnUpdate.setEnabled(true);
+						btnSave.setEnabled(false);
+						btnDiscard.setEnabled(false);
 
 					}
-				});
 
-				// ten listener powduje bledy
-				new_dict_data.addListener(SWT.MouseDown, new Listener() {
 					@Override
-					public void handleEvent(Event event) {
+					public void widgetSelected(SelectionEvent arg0) {
 
-						/*
-						 * Boolean checkTables[] = new
-						 * Boolean[new_dict_data.getColumnCount()];
-						 * 
-						 * for (int i=0; i<dict_data.getColumnCount(); i++) {
-						 * 
-						 * checkTables[i] =
-						 * dict_data.getItem(dict_data.getSelectionIndex
-						 * ()).getText(i) ==
-						 * new_dict_data.getItem(new_dict_data.
-						 * getSelectionIndex()).getText(i);
-						 * 
-						 * }
-						 * 
-						 * 
-						 * if (Arrays.asList(checkTables).contains(false)) {
-						 * 
-						 * lblNewLabel_1.setText(dict_data.getItem(dict_data.
-						 * getSelectionIndex()).getText(0)); // label do
-						 * wyswietlenie ze nacislem
-						 * lblNewLabel_2.setText(new_dict_data
-						 * .getItem(new_dict_data
-						 * .getSelectionIndex()).getText(0)); // label do
-						 * wyswietlenie ze nacislem
-						 * 
-						 * btnUpdate.setEnabled(true);
-						 * btnDiscard.setEnabled(true); }
-						 */
-						// edytor
+						if (s != null)
+							clearEditor();
 
-						arCombo.clear();
-						arEditor.clear();
-						for (int z = 0; z < dict_data.getColumnCount(); z++) {
-							arCombo.add(new Combo(dict_data, SWT.NONE));
-							arCombo.get(z).add("item " + z);
-							arEditor.add(new TableEditor(new_dict_data));
-						}
-
-						TableItem[] items = dict_data.getItems();
-						for (int t = 0; t < items.length; t++) {
-							for (int w = 0; w < dict_data.getColumnCount(); w++) {
-
-								arCombo.get(w).setText(items[t].getText(w));
-								arEditor.get(w).grabHorizontal = true;
-								arEditor.get(w).grabVertical = true;
-								arEditor.get(w).setEditor(arCombo.get(w), items[t], w);
-							}
-
-						}
-
-						// koniec edytora
+						btnUpdate.setEnabled(true);
+						btnSave.setEnabled(false);
+						btnDiscard.setEnabled(false);
+						cmb1.setEnabled(true);
 
 					}
 				});
@@ -304,7 +248,6 @@ public class main_window {
 		shell.setSize(act_size);
 		shell.setText("DEF");
 		shell.setLayout(new BorderLayout(5, 5));
-		shell.setLayout(new BorderLayout(0, 0));
 
 		Menu menu = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(menu);
