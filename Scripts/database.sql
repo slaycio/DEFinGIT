@@ -423,8 +423,8 @@ SELECT pg_catalog.setval('organizations_org_id_seq', 2, true);
 
 
 
-INSERT INTO accounts (org_id, name, acc_type_id, symbol, description, currency_id) VALUES ('eKonto',2,'EKN','eKonto',1);
-INSERT INTO accounts (org_id, name, acc_type_id, symbol, description, currency_id) VALUES ('Gotówka',2,'GOT','Gotówka',1);
+INSERT INTO accounts (org_id, name, acc_type_id, symbol, description, currency_id) VALUES (1,'eKonto',2,'EKN','eKonto',1);
+INSERT INTO accounts (org_id, name, acc_type_id, symbol, description, currency_id) VALUES (2,'Gotówka',1,'GOT','Gotówka',1);
 
 
 SELECT pg_catalog.setval('accounts_acc_id_seq', 4, true);
