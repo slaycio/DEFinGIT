@@ -18,7 +18,6 @@ public class main_window {
 	private static Table new_dict_data;
 	private static TabFolder tabFolder;
 	private static Composite dict_data_comp;
-	private static String[][][] slowniki;
 	private static Shell shell;
 	private static Point act_size = new Point(1116, 600);
 	private static Integer kaunt = 0;
@@ -34,7 +33,6 @@ public class main_window {
 	 */
 	public static void draw_center() {
 		tabFolder = new TabFolder(shell, SWT.NONE);
-		// tabFolder.setLayoutData(BorderLayout.CENTER);
 		tabFolder.setLayoutData(null);
 
 		TabItem tbtmOpcjaNumer = new TabItem(tabFolder, SWT.NONE);
@@ -45,57 +43,22 @@ public class main_window {
 
 		TabItem tbtmDictionaries = new TabItem(tabFolder, SWT.NONE);
 		tbtmDictionaries.setText("S³owniki");
-
-		
-		
-		slowniki = new String[3][5][20];
-		// 0 nazwa s³ownika
-		// 1 ilosc kolumn + nazwy
-		// 2 zapytanie do bazy
-		// 3 update bazy
-		// 4 insert bazy
-
-		String[] nazwa0 = {"Typy kont"};
-		String[] kolumny0 = {"2", "Nazwa", "Opis"};
-		String[] zapytanie0 = {"select name, description from account_types"};
-		String[] update0 = {""};
-		String[] insert0 = {""};
-		slowniki[0] = (new String[][]{nazwa0, kolumny0, zapytanie0, update0, insert0});
-
-		String[] nazwa1 = {"Konta"};
-		String[] kolumny1 = {"6", "Organizacja", "Symbol", "Nazwa", "Opis", "Waluta", "Typ konta"};
-		String[] zapytanie1 = {"select organizations.name, accounts.symbol, accounts.name, accounts.description, currencies.name, account_types.name from accounts , account_types , currencies , organizations where accounts.acc_type_id = account_types.acc_type_id and accounts.currency_id = currencies.currency_id and accounts.org_id =organizations.org_id "};
-		String[] update1 = {""};
-		String[] insert1 = {""};
-		slowniki[1] = (new String[][]{nazwa1, kolumny1, zapytanie1, update1, insert1});
-
-		String[] nazwa2 = {"Organizacje"};
-		String[] kolumny2 = {"2", "Organizacja", "Symbol", "Nazwa", "Opis", "Waluta", "Typ konta"};
-		String[] zapytanie2 = {"select name, description from organizations"};
-		String[] update2 = {""};
-		String[] insert2 = {""};
-		slowniki[2] = (new String[][]{nazwa2, kolumny2, zapytanie2, update2, insert2});
-
+	
 		dict_data_comp = new Composite(tabFolder, SWT.NONE);
 
 		tbtmDictionaries.setControl(dict_data_comp);
 		RowLayout rl_composite = new RowLayout(SWT.VERTICAL);
-		// rl_composite.center = true;
-		// rl_composite.fill = true;
 		dict_data_comp.setLayout(rl_composite);
 		dict_data_comp.setSize(act_size.x - 200, act_size.y);
 
 		Composite combo_holder = new Composite(dict_data_comp, SWT.NONE);
-		// combo_holder.setSize(new Point(dict_data_comp.getSize().x-300, 23));
 
 		final Combo cmb1 = new Combo(combo_holder, SWT.DROP_DOWN);
 		cmb1.setSize(new Point(dict_data_comp.getSize().x - 200, 23));
 
-		//for (int r = 0; r < slowniki.length; r++) {
+	
 		for (int r = 0; r < st.slownik.size(); r++) {
-		//for (int r = 0; r < 1; r++) {
 
-			//cmb1.add(slowniki[r][0][0]);
 			cmb1.add(st.slownik.get(r).get(0).get(0));
 
 		}
@@ -166,7 +129,7 @@ public class main_window {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// s = cmb1.getSelectionIndex();
+
 
 				dict_data.removeAll();
 				new_dict_data.removeAll();
@@ -176,11 +139,16 @@ public class main_window {
 					dict_data.getColumns()[0].dispose();
 				}
 
-				for (int a = 0; a < Integer.parseInt(slowniki[cmb1.getSelectionIndex()][1][0]); a++) {
+				for (int a = 0; a < Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0));
+
+						 a++) {
 
 					TableColumn tblclmnNewColumn = new TableColumn(dict_data, SWT.NONE);
-					tblclmnNewColumn.setWidth((dict_data.getSize().x / Integer.parseInt(slowniki[cmb1.getSelectionIndex()][1][0])) - 2);
-					tblclmnNewColumn.setText(slowniki[cmb1.getSelectionIndex()][1][a + 1]);
+					tblclmnNewColumn.setWidth((dict_data.getSize().x / Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))) - 2);
+					tblclmnNewColumn.setText(
+							st.slownik.get(cmb1.getSelectionIndex()).get(1).get(a+1)
+
+							);
 
 				}
 				dict_data.setRedraw(true);
@@ -190,20 +158,28 @@ public class main_window {
 					new_dict_data.getColumns()[0].dispose();
 				}
 
-				for (int a = 0; a < Integer.parseInt(slowniki[cmb1.getSelectionIndex()][1][0]); a++) {
+				for (int a = 0; a < 
+	
+						Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
+						; a++) {
 
 					TableColumn newtblclmnNewColumn = new TableColumn(new_dict_data, SWT.NONE);
-					newtblclmnNewColumn.setWidth((new_dict_data.getSize().x / Integer.parseInt(slowniki[cmb1.getSelectionIndex()][1][0])) - 2);
+					newtblclmnNewColumn.setWidth((new_dict_data.getSize().x / Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))) - 2);
 
 				}
 				new_dict_data.setRedraw(true);
 
 				// -- polaczenie do bazy
 				db db_con = new db();
-				// pobranie danych o typach kont zwraca 2 kolumny i ilestam
-				// rekordow
+				// pobranie danych o typach kont zwraca 2 kolumny i ilestam rekordow
 
-				String[][] lista = db_con.get_data(slowniki[cmb1.getSelectionIndex()][2][0], Integer.parseInt(slowniki[cmb1.getSelectionIndex()][1][0]));
+
+				String[][] lista = db_con.get_data(
+						st.slownik.get(cmb1.getSelectionIndex()).get(2).get(0)		
+								,
+	
+						Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
+						);
 
 				for (int w = 0; w < lista.length; w++) {
 					TableItem item = new TableItem(dict_data, SWT.NONE);
@@ -217,7 +193,9 @@ public class main_window {
 						new_dict_data.removeAll();
 						TableItem updated = new TableItem(new_dict_data, SWT.NONE);
 
-						for (int k = 0; k < Integer.parseInt(slowniki[cmb1.getSelectionIndex()][1][0]); k++) {
+						for (int k = 0; k < 
+								Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
+								; k++) {
 							updated.setText(k, selection[0].getText(k));
 							btnUpdate.setEnabled(false);
 							btnDiscard.setEnabled(false);
