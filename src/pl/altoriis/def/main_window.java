@@ -139,14 +139,21 @@ public class main_window {
 					dict_data.getColumns()[0].dispose();
 				}
 
-				for (int a = 0; a < Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0));
+				for (int a = 0; a < 
+						//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
+						st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
+						;
 
 						 a++) {
 
 					TableColumn tblclmnNewColumn = new TableColumn(dict_data, SWT.NONE);
-					tblclmnNewColumn.setWidth((dict_data.getSize().x / Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))) - 2);
+					tblclmnNewColumn.setWidth((dict_data.getSize().x / 
+							//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
+							st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
+							) - 2);
 					tblclmnNewColumn.setText(
-							st.slownik.get(cmb1.getSelectionIndex()).get(1).get(a+1)
+							//st.slownik.get(cmb1.getSelectionIndex()).get(1).get(a+1)
+							st.slownik.get(cmb1.getSelectionIndex()).get(1).get(a)
 
 							);
 
@@ -159,12 +166,15 @@ public class main_window {
 				}
 
 				for (int a = 0; a < 
-	
-						Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
+						st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
+						//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
 						; a++) {
 
 					TableColumn newtblclmnNewColumn = new TableColumn(new_dict_data, SWT.NONE);
-					newtblclmnNewColumn.setWidth((new_dict_data.getSize().x / Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))) - 2);
+					newtblclmnNewColumn.setWidth((new_dict_data.getSize().x / 
+							//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
+							st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
+							) - 2);
 
 				}
 				new_dict_data.setRedraw(true);
@@ -177,8 +187,8 @@ public class main_window {
 				String[][] lista = db_con.get_data(
 						st.slownik.get(cmb1.getSelectionIndex()).get(2).get(0)		
 								,
-	
-						Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
+								st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
+								//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
 						);
 
 				for (int w = 0; w < lista.length; w++) {
@@ -194,7 +204,8 @@ public class main_window {
 						TableItem updated = new TableItem(new_dict_data, SWT.NONE);
 
 						for (int k = 0; k < 
-								Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
+								//Integer.parseInt(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(0))
+								st.slownik.get(cmb1.getSelectionIndex()).get(1).size()
 								; k++) {
 							updated.setText(k, selection[0].getText(k));
 							btnUpdate.setEnabled(false);
