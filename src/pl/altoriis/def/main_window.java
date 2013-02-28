@@ -15,7 +15,7 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.events.SelectionAdapter;
 
 public class main_window {
-	private static Table dict_data;
+	private static defTable defTable ;
 	private static TabFolder tabFolder;
 	private static Composite dict_data_comp;
 	private static Shell shell;
@@ -70,11 +70,14 @@ public class main_window {
 			cmb1.add(st.slownik.get(r).get(0).get(0));
 		}
 
-		dict_data = new Table(dict_data_comp, SWT.BORDER | SWT.FULL_SELECTION);
-		dict_data.setLayoutData(new RowData(dict_data_comp.getSize().x, dict_data_comp.getSize().y - 200));
-		dict_data.setHeaderVisible(true);
-		dict_data.setLinesVisible(true);
-
+		defTable = new defTable(dict_data_comp, SWT.BORDER | SWT.FULL_SELECTION);
+		defTable.getLocalTable().setLayoutData(new RowData(dict_data_comp.getSize().x, dict_data_comp.getSize().y - 200));
+		
+		
+		
+		defTable.getLocalTable().setHeaderVisible(true);
+		defTable.getLocalTable().setLinesVisible(true);
+		
 		Composite buttons = new Composite(dict_data_comp, SWT.NONE);
 		buttons.setLayout(new FillLayout(SWT.HORIZONTAL));
 
@@ -109,16 +112,17 @@ public class main_window {
 
 					// to przygotwuje odpowiednia ilosc combo z danymi i edytorw
 					// do nich
-					for (int z = 0; z < dict_data.getColumnCount(); z++) {
-						arCombo.add(new Combo(dict_data, SWT.NONE));
+					for (int z = 0; z < defTable.getLocalTable().getColumnCount(); z++) {
+						arCombo.add(new Combo(defTable.getLocalTable(), SWT.NONE));
 						arCombo.get(z).add("item " + z);
-						arEditor.add(new TableEditor(dict_data));
+						arEditor.add(new TableEditor(defTable.getLocalTable()));
 					}
 
-					s = dict_data.getSelectionIndex();
-					TableItem item = dict_data.getItem(s);
+					s = defTable.getLocalTable().getSelectionIndex();
+					///TableItem item = dict_data.getItem(s);
+					TableItem item = defTable.dajItem(s);
 
-					for (int w = 0; w < dict_data.getColumnCount(); w++) {
+					for (int w = 0; w < defTable.getLocalTable().getColumnCount(); w++) {
 						arCombo.get(w).setText(item.getText(w));
 						arEditor.get(w).grabHorizontal = true;
 						arEditor.get(w).grabVertical = true;
@@ -169,19 +173,19 @@ public class main_window {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				dict_data.removeAll();
+				defTable.getLocalTable().removeAll();
 
-				dict_data.setRedraw(false);
-				while (dict_data.getColumnCount() > 0) {
-					dict_data.getColumns()[0].dispose();
+				defTable.getLocalTable().setRedraw(false);
+				while (defTable.getLocalTable().getColumnCount() > 0) {
+					defTable.getLocalTable().getColumns()[0].dispose();
 				}
 
 				for (int a = 0; a < st.slownik.get(cmb1.getSelectionIndex()).get(1).size(); a++) {
-					TableColumn tblclmnNewColumn = new TableColumn(dict_data, SWT.NONE);
-					tblclmnNewColumn.setWidth((dict_data.getSize().x / st.slownik.get(cmb1.getSelectionIndex()).get(1).size()) - 2);
+					TableColumn tblclmnNewColumn = new TableColumn(defTable.getLocalTable(), SWT.NONE);
+					tblclmnNewColumn.setWidth((defTable.getLocalTable().getSize().x / st.slownik.get(cmb1.getSelectionIndex()).get(1).size()) - 2);
 					tblclmnNewColumn.setText(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(a));
 				}
-				dict_data.setRedraw(true);
+				defTable.getLocalTable().setRedraw(true);
 
 				// -- polaczenie do bazy
 				db db_con = new db();
@@ -192,11 +196,11 @@ public class main_window {
 						);
 
 				for (int w = 0; w < lista.length; w++) {
-					TableItem item = new TableItem(dict_data, SWT.NONE);
+					TableItem item = new TableItem(defTable.getLocalTable(), SWT.NONE);
 					item.setText(lista[w]);
 				}
 
-				dict_data.addSelectionListener(new SelectionListener() {
+				defTable.getLocalTable().addSelectionListener(new SelectionListener() {
 
 					@Override
 					public void widgetDefaultSelected(SelectionEvent arg0) {
