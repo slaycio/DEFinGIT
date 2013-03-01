@@ -18,7 +18,7 @@ class defTable  {
 	
 	public defTable(Composite parent, int style) {
 				
-		setLocalTable(new Table(parent, style));	
+		set(new Table(parent, style));	
 		// TODO Auto-generated constructor stub
 	}
 
@@ -33,9 +33,8 @@ class defTable  {
 		
 		
 		Integer s = localTable.getSelectionIndex();
-		
-		
-		if (s > 0){
+				
+		if (s != null){
 		// edytor
 		arCombo = new ArrayList<Combo>();
 		arEditor = new ArrayList<TableEditor>();
@@ -84,11 +83,11 @@ class defTable  {
 	
 	
 	
-	public Table getLocalTable() {
+	public Table get() {
 		return localTable;
 	}
 
-	public void setLocalTable(Table localTable) {
+	public void set(Table localTable) {
 		this.localTable = localTable;
 	}
 

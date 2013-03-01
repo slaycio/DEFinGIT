@@ -2,7 +2,6 @@ package pl.altoriis.def;
 
 
 import java.util.ArrayList;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 import swing2swt.layout.BorderLayout;
@@ -21,7 +20,7 @@ public class main_window {
 	private static Composite dict_data_comp;
 	private static Shell shell;
 	private static Point act_size = new Point(1116, 600);
-	private static static_data st = new static_data();
+	private static staticData st = new staticData();
 
 	/**
 	 * Launch the application.
@@ -56,14 +55,14 @@ public class main_window {
 		cmb1.setSize(new Point(dict_data_comp.getSize().x - 600, 23));
 
 		
-		for (int r = 0; r < st.slownik.size(); r++) {
-			cmb1.add(st.slownik.get(r).get(0).get(0));
+		for (int r = 0; r < st.get().size(); r++) {
+			cmb1.add(st.get().get(r).get(0));
 		}
 
 		defTable = new defTable(dict_data_comp, SWT.BORDER | SWT.FULL_SELECTION);
-		defTable.getLocalTable().setLayoutData(new RowData(dict_data_comp.getSize().x, dict_data_comp.getSize().y - 200));
-		defTable.getLocalTable().setHeaderVisible(true);
-		defTable.getLocalTable().setLinesVisible(true);
+		defTable.get().setLayoutData(new RowData(dict_data_comp.getSize().x, dict_data_comp.getSize().y - 200));
+		defTable.get().setHeaderVisible(true);
+		defTable.get().setLinesVisible(true);
 		
 		Composite buttons = new Composite(dict_data_comp, SWT.NONE);
 		buttons.setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -136,56 +135,46 @@ public class main_window {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				defTable.getLocalTable().removeAll();
-				defTable.getLocalTable().setRedraw(false);
+				defTable.get().removeAll();
+				defTable.get().setRedraw(false);
 				btnUpdate.setEnabled(false);
 				btnSave.setEnabled(false);
 				btnDiscard.setEnabled(false);
 				
 				
-				while (defTable.getLocalTable().getColumnCount() > 0) {
-					defTable.getLocalTable().getColumns()[0].dispose();
+				while (defTable.get().getColumnCount() > 0) {
+					defTable.get().getColumns()[0].dispose();
 				}
 
 				// -- polaczenie do bazy
 				db dbCon = new db();
 				
 				ArrayList<ArrayList<String>> lista = dbCon.getData(
-						st.slownik.get(cmb1.getSelectionIndex()).get(2).get(0)
+						st.get().get(cmb1.getSelectionIndex()).get(1)
 						);
 
-			/*	
-				
-				for (int a = 0; a < st.slownik.get(cmb1.getSelectionIndex()).get(1).size(); a++) {
-					TableColumn tblclmnNewColumn = new TableColumn(defTable.getLocalTable(), SWT.NONE);
-					tblclmnNewColumn.setWidth((defTable.getLocalTable().getSize().x / st.slownik.get(cmb1.getSelectionIndex()).get(1).size()) - 2);
-					tblclmnNewColumn.setText(st.slownik.get(cmb1.getSelectionIndex()).get(1).get(a));
-				}
-				*/
+			
 				
 				for (int a = 0; a < lista.get(0).size();a++){
-					TableColumn tNColumn = new TableColumn(defTable.getLocalTable(), SWT.NONE);
-					tNColumn.setWidth((defTable.getLocalTable().getSize().x / lista.get(0).size() ) - 2);
+					TableColumn tNColumn = new TableColumn(defTable.get(), SWT.NONE);
+					tNColumn.setWidth((defTable.get().getSize().x / lista.get(0).size() ) - 2);
 					tNColumn.setText(lista.get(0).get(a));
 					}
 				
 				
-				defTable.getLocalTable().setRedraw(true);
+				defTable.get().setRedraw(true);
 
-
-			
-				
 				for (int w = 1; w < lista.size(); w++) {
-					TableItem item = new TableItem(defTable.getLocalTable(), SWT.NONE);
+					TableItem item = new TableItem(defTable.get(), SWT.NONE);
 					for(int g = 0;g < lista.get(w).size();g++){
 						item.setText(g,lista.get(w).get(g));
 					}	
 				}
 		
 			 
-				defTable.getLocalTable().setData(lista.toArray());
+				defTable.get().setData(lista.toArray());
 				
-				defTable.getLocalTable().addSelectionListener(new SelectionListener() {
+				defTable.get().addSelectionListener(new SelectionListener() {
 
 					@Override
 					public void widgetDefaultSelected(SelectionEvent arg0) {
