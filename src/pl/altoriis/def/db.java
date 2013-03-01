@@ -1,13 +1,15 @@
 package pl.altoriis.def;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class db {
 
-	public final properties properties = new properties();
-	public Connection cn = null;
-	public Statement st = null;
-
+	private final properties properties = new properties();
+	private Connection cn = null;
+	private Statement st = null;
+	
+	
 	// TODO Koniecznie zmien db tak by oddawalo kolekcje wierszy
 	
 	public db() {
@@ -32,38 +34,41 @@ public class db {
 		}
 	}/* end of finalize() method */
 
-	public String[][] get_data(String query, Integer columns) {
+	
+	public ArrayList<ArrayList<String>> getData(String query) {
 
 		ResultSet rs = null;
-		int rsSize = 0;
-		String[][] wynik = null;
+	
+	
+		ArrayList<ArrayList<String>> arResult = new ArrayList<ArrayList<String>>(); 
+		ArrayList<String> colNames = new ArrayList<String>(); 
 
 		try {
 
 			rs = st.executeQuery(query);
-
-			try {
-				rs.last();
-				rsSize = rs.getRow();
-				rs.beforeFirst();
-			} catch (Exception ex) {
-				ex.printStackTrace();
+			for (int v =1;v <= rs.getMetaData().getColumnCount();v++){
+			colNames.add(rs.getMetaData().getColumnLabel(v));
 			}
-			wynik = new String[rsSize][columns];
-
+			arResult.add(colNames);
+	
 			while (rs.next()) {
-				for (int w = 0; w < columns; w++) {
-
-					wynik[rs.getRow() - 1][w] = rs.getString(w + 1);
-				}
+			ArrayList<String> arRow = new ArrayList<String>();
+					for (int w = 1; w <= rs.getMetaData().getColumnCount(); w++) {
+						
+						arRow.add(rs.getString(w));
+						}
+					
+					arResult.add(arRow);
+				
 			}
-
+					
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 
 		}
 
-		return wynik;
+		
+		return arResult;
 	} /* end of get_data() method */
 
 }/* end of db class */

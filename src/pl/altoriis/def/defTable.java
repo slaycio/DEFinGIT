@@ -14,8 +14,7 @@ class defTable  {
 	private Table localTable;
 	private static ArrayList<Combo> arCombo;
 	private static ArrayList<TableEditor> arEditor;
-	//private static Integer s;
-	public Boolean isEdited = false;
+	private Boolean isEdited = false;
 	
 	public defTable(Composite parent, int style) {
 				
@@ -34,6 +33,7 @@ class defTable  {
 		
 		
 		Integer s = localTable.getSelectionIndex();
+		
 		
 		if (s > 0){
 		// edytor
