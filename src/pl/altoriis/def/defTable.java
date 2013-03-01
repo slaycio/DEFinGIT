@@ -14,7 +14,8 @@ class defTable  {
 	private Table localTable;
 	private static ArrayList<Combo> arCombo;
 	private static ArrayList<TableEditor> arEditor;
-	private static Integer s;
+	//private static Integer s;
+	public Boolean isEdited = false;
 	
 	public defTable(Composite parent, int style) {
 				
@@ -23,29 +24,30 @@ class defTable  {
 	}
 
 	
-	public TableItem dajItem (int a){
-		
-		
-		return localTable.getItem(a);
-		
+	
+	public Integer gSelIndex(){
+	return localTable.getSelectionIndex();
 	}
 	
+		
 	public void addEditor(){
 		
+		
+		Integer s = localTable.getSelectionIndex();
+		
+		if (s > 0){
 		// edytor
 		arCombo = new ArrayList<Combo>();
 		arEditor = new ArrayList<TableEditor>();
 
-		// to przygotwuje odpowiednia ilosc combo z danymi i edytorw
-		// do nich
-		for (int z = 0; z < localTable).getColumnCount(); z++) {
+		// to przygotwuje odpowiednia ilosc combo z danymi i edytorów  do nich
+		for (int z = 0; z < localTable.getColumnCount(); z++) {
 			arCombo.add(new Combo(localTable, SWT.NONE));
 			arCombo.get(z).add("item " + z);
 			arEditor.add(new TableEditor(localTable));
 		}
 
-		s = localTable.getSelectionIndex();
-		///TableItem item = dict_data.getItem(s);
+		
 		TableItem item = localTable.getItem(s);
 
 		for (int w = 0; w < localTable.getColumnCount(); w++) {
@@ -56,20 +58,27 @@ class defTable  {
 
 		}
 
+		isEdited = true;
 		// koniec edytora
-
+		}
 		
 		
 	}
 	
 	public void clearEditor() {
 
-		for (int d = 0; d < arCombo.size(); d++) {
-			arCombo.get(d).dispose();
+		if (isEdited) {
+				for (int u = 0; u < arCombo.size()
+						; u++) {
+					arCombo.get(u).dispose();
+				}
+				for (int y = 0; y < arEditor.size()
+						; y++) {
+					arEditor.get(y).dispose();
+				}
+				isEdited = false;
 		}
-		for (int d = 0; d < arEditor.size(); d++) {
-			arEditor.get(d).dispose();
-		}
+		
 	}
 	
 	

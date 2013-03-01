@@ -40,10 +40,9 @@ public class static_data {
     zero.add(kolumny0);
     zero.add(zapytanie0);
     
-    //newInstance(newSet()); // tutaj ma byc zmiana
+   
     newInstance(zero);
-  	
-  	//nazwa0.clear();
+  
     
  
     ArrayList<String> nazwa1 = new ArrayList<String>();

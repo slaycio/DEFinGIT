@@ -1,10 +1,9 @@
 package pl.altoriis.def;
 
-import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 import swing2swt.layout.BorderLayout;
-import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
@@ -20,9 +19,6 @@ public class main_window {
 	private static Composite dict_data_comp;
 	private static Shell shell;
 	private static Point act_size = new Point(1116, 600);
-	private static Integer s;
-	private static ArrayList<Combo> arCombo;
-	private static ArrayList<TableEditor> arEditor;
 	private static static_data st = new static_data();
 
 	/**
@@ -31,16 +27,7 @@ public class main_window {
 	 * @param args
 	 */
 
-	private static void clearEditor() {
-
-		for (int d = 0; d < arCombo.size(); d++) {
-			arCombo.get(d).dispose();
-		}
-		for (int d = 0; d < arEditor.size(); d++) {
-			arEditor.get(d).dispose();
-		}
-	}
-
+	
 	public static void draw_center() {
 		tabFolder = new TabFolder(shell, SWT.NONE);
 		tabFolder.setLayoutData(null);
@@ -72,9 +59,6 @@ public class main_window {
 
 		defTable = new defTable(dict_data_comp, SWT.BORDER | SWT.FULL_SELECTION);
 		defTable.getLocalTable().setLayoutData(new RowData(dict_data_comp.getSize().x, dict_data_comp.getSize().y - 200));
-		
-		
-		
 		defTable.getLocalTable().setHeaderVisible(true);
 		defTable.getLocalTable().setLinesVisible(true);
 		
@@ -105,32 +89,8 @@ public class main_window {
 					btnSave.setEnabled(true);
 					btnDiscard.setEnabled(true);
 					cmb1.setEnabled(false);
-
-					// edytor
-					arCombo = new ArrayList<Combo>();
-					arEditor = new ArrayList<TableEditor>();
-
-					// to przygotwuje odpowiednia ilosc combo z danymi i edytorw
-					// do nich
-					for (int z = 0; z < defTable.getLocalTable().getColumnCount(); z++) {
-						arCombo.add(new Combo(defTable.getLocalTable(), SWT.NONE));
-						arCombo.get(z).add("item " + z);
-						arEditor.add(new TableEditor(defTable.getLocalTable()));
-					}
-
-					s = defTable.getLocalTable().getSelectionIndex();
-					///TableItem item = dict_data.getItem(s);
-					TableItem item = defTable.dajItem(s);
-
-					for (int w = 0; w < defTable.getLocalTable().getColumnCount(); w++) {
-						arCombo.get(w).setText(item.getText(w));
-						arEditor.get(w).grabHorizontal = true;
-						arEditor.get(w).grabVertical = true;
-						arEditor.get(w).setEditor(arCombo.get(w), item, w);
-
-					}
-
-					// koniec edytora
+					
+					defTable.addEditor();
 
 				}
 			}
@@ -141,7 +101,7 @@ public class main_window {
 			public void handleEvent(Event event) {
 				if (event.widget == btnSave) {
 
-					clearEditor();
+					defTable.clearEditor();
 					btnUpdate.setEnabled(true);
 					btnSave.setEnabled(false);
 					btnDiscard.setEnabled(false);
@@ -155,7 +115,7 @@ public class main_window {
 			public void handleEvent(Event event) {
 				if (event.widget == btnDiscard) {
 
-					clearEditor();
+					defTable.clearEditor();
 					btnUpdate.setEnabled(true);
 					btnSave.setEnabled(false);
 					btnDiscard.setEnabled(false);
@@ -174,8 +134,12 @@ public class main_window {
 			public void widgetSelected(SelectionEvent e) {
 
 				defTable.getLocalTable().removeAll();
-
 				defTable.getLocalTable().setRedraw(false);
+				btnUpdate.setEnabled(false);
+				btnSave.setEnabled(false);
+				btnDiscard.setEnabled(false);
+				
+				
 				while (defTable.getLocalTable().getColumnCount() > 0) {
 					defTable.getLocalTable().getColumns()[0].dispose();
 				}
@@ -207,26 +171,22 @@ public class main_window {
 						btnUpdate.setEnabled(true);
 						btnSave.setEnabled(false);
 						btnDiscard.setEnabled(false);
-
-					}
+						}
 
 					@Override
 					public void widgetSelected(SelectionEvent arg0) {
 
-						if (s != null)
-							clearEditor();
+						//if (defTable.isEdited) 
+							defTable.clearEditor();
 
 						btnUpdate.setEnabled(true);
 						btnSave.setEnabled(false);
 						btnDiscard.setEnabled(false);
 						cmb1.setEnabled(true);
 
-					}
-				});
-
-			} // tu sie konczy wewnetrzny selection event -- przed tym trzeba
-				// wstawic kod by by³ uruchomiony po zmianie w comboboxie
-		}); // tu sie konczy listener dla comboboxa
+					}}); // koniec listnera tabeli roboczej
+				db_con.finalize();
+			}}); // koniec listenera comboboxa
 
 	}
 
@@ -266,18 +226,10 @@ public class main_window {
 		mntmMenu_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// /////////////// TUTAJ WSTAWIAJ
-				for (int u = 0; u < arEditor.size(); u++) {
-					arEditor.get(u).dispose();
-				}
-				for (int u = 0; u < arCombo.size(); u++) {
-					arCombo.get(u).dispose();
-				}
-				arEditor.clear();
-				arCombo.clear();
-
-			}
-		});
+				// Listener dla menu 1
+				defTable.clearEditor();
+		}});
+		
 		mntmMenu_1.setText("Menu 1");
 
 		MenuItem mntmMenu_2 = new MenuItem(menu_1, SWT.NONE);
