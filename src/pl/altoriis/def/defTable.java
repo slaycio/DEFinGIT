@@ -1,19 +1,24 @@
 package pl.altoriis.def;
+//System.out.println(data);
+
 
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 
 class defTable  {
 	
 	private Table localTable;
-	private static ArrayList<Combo> arCombo;
+	private static ArrayList<Control> arControl;
 	private static ArrayList<TableEditor> arEditor;
 	private Boolean isEdited = false;
 	
@@ -42,7 +47,12 @@ class defTable  {
 		
 		for (int a = 0; a < input.get(0).size();a++){
 			TableColumn tNColumn = new TableColumn(localTable, SWT.NONE);
-			tNColumn.setWidth((localTable.getSize().x / input.get(0).size() ) - 2);
+			
+			if (a <2){
+			tNColumn.setWidth(0);
+			}else {
+			tNColumn.setWidth((localTable.getSize().x / (input.get(0).size()-2) ) - 2);
+			}
 			tNColumn.setText(input.get(0).get(a));
 			}
 		for (int w = 1; w < input.size(); w++) {
@@ -52,52 +62,115 @@ class defTable  {
 				}	
 			}
 		
+			
+		
 		localTable.setRedraw(true);
 	}
 	
 	
 		
-	public void addEditor(){
+	public Boolean addEditor(){
 		
 		
 		Integer s = localTable.getSelectionIndex();
 				
 		if (s != null){
 		// edytor
-		arCombo = new ArrayList<Combo>();
+		
 		arEditor = new ArrayList<TableEditor>();
-
-		// to przygotwuje odpowiednia ilosc combo z danymi i edytorów  do nich
+		arControl = new ArrayList<Control>();
+// TU TRZBA TE MAPY WYKMINIC I ZROBIC £ADNIE
+		ArrayList<String> mapa =  new ArrayList<String>();
+		
+		mapa.add("Ukryta");
+		mapa.add("Ukryta");
+		mapa.add("Text");
+		mapa.add("Combo");
+		mapa.add("Text");
+		mapa.add("Combo");
+		mapa.add("Text");
+		mapa.add("Text");
+		mapa.add("Combo");
+		
+		db fk = new db();
+		
+		// TODO trzeba zrobiæ by mozna podac do query liste paramatrów
+		// przeladujemy wywolanie tej metody.
+		//Query query = em.createQuery("SELECT p FROM Pracownik p WHERE p.imie = :imie");
+	   // query.setParameter("imie", "Jacek");
+		
+		ArrayList<ArrayList<String>> mapaX = fk.getData("select fk.table_name, col.column_name " +
+		"from information_schema.referential_constraints ref, "+
+		"information_schema.table_constraints fk, "+
+		"information_schema.constraint_column_usage col "+
+		"where ref.constraint_name = fk.constraint_name "+
+		"and col.constraint_name = fk.constraint_name ");
+		
+		
+		
+	
+		
+		// to przygotowuje odpowiednia ilosc combo z danymi i edytorów  do nich
+	
+		
+		
 		for (int z = 0; z < localTable.getColumnCount(); z++) {
-			arCombo.add(new Combo(localTable, SWT.NONE));
-			arCombo.get(z).add("item " + z);
-			arEditor.add(new TableEditor(localTable));
+			
+			if (mapa.get(z) != null ) {
+				if (mapa.get(z).toString() =="Text") {
+				
+			
+					arControl.add(new Text(localTable, SWT.NONE));
+				((Text) arControl.get(z)).setText("item " + z);
+				} else {
+					arControl.add(new Combo(localTable, SWT.NONE));
+				((Combo) arControl.get(z)).add("item " + z);
+				((Combo) arControl.get(z)).add("item " + (z+1));}
+				arEditor.add(new TableEditor(localTable));
+			}
+						
+			
+			
 		}
-
+	
 		
 		TableItem item = localTable.getItem(s);
 
-		for (int w = 0; w < localTable.getColumnCount(); w++) {
-			arCombo.get(w).setText(item.getText(w));
+		
+		for (int w = 0; w < localTable.getColumnCount()
+				; w++) {
+			
 			arEditor.get(w).grabHorizontal = true;
 			arEditor.get(w).grabVertical = true;
-			arEditor.get(w).setEditor(arCombo.get(w), item, w);
+			arEditor.get(w).setEditor(arControl.get(w), item, w);
 
-		}
-
-		isEdited = true;
-		// koniec edytora
 		}
 		
+		
+		
+		isEdited = true;
+
+		return true;
+		
+		// koniec edytora
+		}
+		else {
+	
+			return false;
+		
+			
+		}
 		
 	}
 	
 	public void clearEditor() {
 
+		
 		if (isEdited) {
-				for (int u = 0; u < arCombo.size()
+							
+				for (int u = 0; u < arControl.size()
 						; u++) {
-					arCombo.get(u).dispose();
+					((Control) arControl.get(u)).dispose();
 				}
 				for (int y = 0; y < arEditor.size()
 						; y++) {

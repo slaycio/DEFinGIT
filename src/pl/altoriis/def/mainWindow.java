@@ -41,7 +41,7 @@ public class mainWindow {
 	};
 
 	private void dictBtnsOff() {
-		dictBtnUpdate.setEnabled(true);
+		dictBtnUpdate.setEnabled(false);
 		dictBtnSave.setEnabled(false);
 		dictBtnDiscard.setEnabled(false);
 		dictCmbSelector.setEnabled(true);
@@ -93,8 +93,9 @@ public class mainWindow {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnUpdate) {
+					if(dictTable.addEditor()){
 					dictUpdateOn();
-					dictTable.addEditor();
+					}
 				}
 			}
 		};
@@ -131,10 +132,13 @@ public class mainWindow {
 
 				dictBtnsOff();
 				dictTable.populateTable(dictTableData);
+				
+								
 				dictTable.get().addSelectionListener(new SelectionListener() {
 
 					@Override
 					public void widgetDefaultSelected(SelectionEvent arg0) {
+						dictTable.clearEditor();
 						dictUpdateOff();
 					}
 

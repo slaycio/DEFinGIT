@@ -25,7 +25,8 @@ public class staticData {
 	
 	newRecord = new ArrayList<String>();
     newRecord.add("Typy kont");
-    newRecord.add(	"select name as \"Nazwa\", " +
+    newRecord.add(	"select 'account_types' as \"table_name\", acc_type_id," +
+    				"name as \"Nazwa\", " +
 					"description as \"Opis\" " +
 					"from account_types");
   
@@ -34,7 +35,8 @@ public class staticData {
     
     newRecord = new ArrayList<String>();
     newRecord.add("Konta");
-    newRecord.add("select organizations.name as \"Nazwa organizacji\", " +
+    newRecord.add("select 'accounts' as \"table_name\", acc_id," +
+    		"organizations.name as \"Nazwa organizacji\", " +
     		"accounts.symbol as \"Symbol konta\", " +
     		"accounts.name as \"Nazwa konta\", " +
     		"accounts.description as \"Opis konta\", " +
@@ -50,7 +52,10 @@ public class staticData {
     
     newRecord = new ArrayList<String>();
     newRecord.add("Organizacje");
-    newRecord.add("select name as \"Nazwa\", description as \"Opis\" from organizations");
+    newRecord.add("select 'organizations' as \"table_name\", org_id," +
+    			"name as \"Nazwa\", " +
+    			"description as \"Opis\" " +
+    			"from organizations");
     
     newInstance(newRecord);
     
