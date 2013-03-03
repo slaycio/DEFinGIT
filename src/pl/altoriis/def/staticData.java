@@ -17,9 +17,9 @@ public class staticData {
 	public staticData() {
 	
 	// 0 name of dictionary
-	// 1 db query
-	// 2 db update 
-	// 3 db insert  
+	// 1 database query
+	// 2 database update 
+	// 3 database insert  
 
 	ArrayList<String> newRecord;
 	

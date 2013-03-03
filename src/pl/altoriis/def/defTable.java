@@ -7,6 +7,7 @@ import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 class defTable  {
@@ -22,11 +23,38 @@ class defTable  {
 		// TODO Auto-generated constructor stub
 	}
 
+		
+	public void clearTable(){
 	
-	
-	public Integer gSelIndex(){
-	return localTable.getSelectionIndex();
+		localTable.setRedraw(false);
+		localTable.removeAll();
+		while (localTable.getColumnCount() > 0) {
+			localTable.getColumns()[0].dispose();
+		}
+		localTable.setRedraw(true);
 	}
+	
+	
+	public void populateTable(ArrayList<ArrayList<String>> input){
+		
+		localTable.setRedraw(false);
+		clearTable();
+		
+		for (int a = 0; a < input.get(0).size();a++){
+			TableColumn tNColumn = new TableColumn(localTable, SWT.NONE);
+			tNColumn.setWidth((localTable.getSize().x / input.get(0).size() ) - 2);
+			tNColumn.setText(input.get(0).get(a));
+			}
+		for (int w = 1; w < input.size(); w++) {
+			TableItem item = new TableItem(localTable, SWT.NONE);
+			for(int g = 0;g < input.get(w).size();g++){
+				item.setText(g,input.get(w).get(g));
+				}	
+			}
+		
+		localTable.setRedraw(true);
+	}
+	
 	
 		
 	public void addEditor(){

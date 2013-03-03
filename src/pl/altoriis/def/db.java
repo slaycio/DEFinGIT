@@ -10,8 +10,6 @@ public class db {
 	private Statement st = null;
 	
 	
-	// TODO Koniecznie zmien db tak by oddawalo kolekcje wierszy
-	
 	public db() {
 		try {
 
