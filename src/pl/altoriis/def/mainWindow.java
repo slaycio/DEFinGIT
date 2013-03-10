@@ -17,25 +17,31 @@ public class mainWindow {
 	private static defTable dictTable;
 	private static TabFolder mainTabFolder;
 	private static Composite dictDataComp;
-	private static Shell shell;
+	public static Shell shell;
 	private static Point act_size = new Point(1116, 600);
 	public static staticData st = new staticData();
+	public static Display display;
 	private static Button dictBtnUpdate;
 	private static Button dictBtnSave;
 	private static Button dictBtnDiscard;
+	private static Button dictBtnAdd;
 	private static Combo dictCmbSelector;
+	public static Label infoBar;
 
 	private void dictUpdateOn() {
 		dictBtnUpdate.setEnabled(false);
 		dictBtnSave.setEnabled(true);
 		dictBtnDiscard.setEnabled(true);
+		dictBtnAdd.setEnabled(false);
 		dictCmbSelector.setEnabled(false);
+		infoBar.setText("");
 	};
 
 	private void dictUpdateOff() {
 		dictBtnUpdate.setEnabled(true);
 		dictBtnSave.setEnabled(false);
 		dictBtnDiscard.setEnabled(false);
+		dictBtnAdd.setEnabled(true);
 		dictCmbSelector.setEnabled(true);
 
 	};
@@ -44,7 +50,9 @@ public class mainWindow {
 		dictBtnUpdate.setEnabled(false);
 		dictBtnSave.setEnabled(false);
 		dictBtnDiscard.setEnabled(false);
+		dictBtnAdd.setEnabled(true);
 		dictCmbSelector.setEnabled(true);
+		infoBar.setText("");
 
 	};
 
@@ -68,7 +76,7 @@ public class mainWindow {
 		}
 
 		dictTable = new defTable(dictDataComp, SWT.BORDER | SWT.FULL_SELECTION);
-		dictTable.get().setLayoutData(new RowData(dictDataComp.getSize().x, dictDataComp.getSize().y - 200));
+		dictTable.get().setLayoutData(new RowData(dictDataComp.getSize().x, dictDataComp.getSize().y - 230));
 		dictTable.get().setHeaderVisible(true);
 		dictTable.get().setLinesVisible(true);
 
@@ -87,14 +95,18 @@ public class mainWindow {
 		dictBtnDiscard.setSize(60, 25);
 		dictBtnDiscard.setText("Discard");
 
+		dictBtnAdd = new Button(buttons, SWT.NONE);
+		dictBtnAdd.setSize(60, 25);
+		dictBtnAdd.setText("New Line");
+
 		dictBtnsOff();
 
 		Listener dictUpdateBtnListener = new Listener() {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnUpdate) {
-					if(dictTable.addEditor()){
-					dictUpdateOn();
+					if (dictTable.addEditor()) {
+						dictUpdateOn();
 					}
 				}
 			}
@@ -106,6 +118,11 @@ public class mainWindow {
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnSave) {
 					dictTable.saveEditor();
+					db dbCon = new db();
+					ArrayList<ArrayList<String>> dictTableData = dbCon.getData(st.get().get(dictCmbSelector.getSelectionIndex()).get(1));
+
+					dictTable.populateTable(dictTableData);
+					dbCon.finalize();
 					dictUpdateOff();
 				}
 			}
@@ -116,13 +133,30 @@ public class mainWindow {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnDiscard) {
-					
+
 					dictTable.clearEditor();
+					dictTable.discardNewline();
 					dictUpdateOff();
 				}
 			}
 		};
 		dictBtnDiscard.addListener(SWT.Selection, dictDiscardBtnListener);
+
+		Listener dictAddBtnListener = new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				if (event.widget == dictBtnAdd) {
+
+					if (dictTable.addLine()) {
+
+						dictUpdateOn();
+					}
+
+					dictUpdateOn();
+				}
+			}
+		};
+		dictBtnAdd.addListener(SWT.Selection, dictAddBtnListener);
 
 		dictCmbSelector.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -133,8 +167,7 @@ public class mainWindow {
 
 				dictBtnsOff();
 				dictTable.populateTable(dictTableData);
-				
-								
+
 				dictTable.get().addSelectionListener(new SelectionListener() {
 
 					@Override
@@ -196,10 +229,11 @@ public class mainWindow {
 		 */
 		Composite top = new Composite(shell, SWT.NONE);
 		top.setLayoutData(BorderLayout.NORTH);
-		top.setLayout(new FillLayout(SWT.HORIZONTAL));
+		top.setLayout(new FillLayout(SWT.VERTICAL));
 
 		Label lblDomowyEkspertFinansowy = new Label(top, SWT.BORDER | SWT.SHADOW_IN | SWT.CENTER);
 		lblDomowyEkspertFinansowy.setText("Domowy Ekspert Finansowy v. 666");
+		infoBar = new Label(top, SWT.BORDER | SWT.CENTER);
 
 		/**
 		 * End of top tab.
@@ -270,7 +304,7 @@ public class mainWindow {
 		 * Open the window and do the MAGIC
 		 */
 
-		Display display = Display.getDefault();
+		display = Display.getDefault();
 		shell = new Shell();
 		shell.setLocation(20, 20);
 		shell.setMinimumSize(new Point(200, 200));

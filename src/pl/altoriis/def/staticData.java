@@ -63,6 +63,7 @@ public class staticData {
     		"select 'account_types' ,'acc_type_id' ,'Nazwa','Opis' UNION ALL " +
     		"select 'account_types' ,'acc_type_id' ,'name' ,'description' UNION ALL " +
     		"select 'account_types' ,'acc_type_id' ,'data' ,'data' UNION ALL " +
+    		"select '240' ,'10' ,'240' ,'240' UNION ALL " +
     		"(select 'account_types', acc_type_id::text, name, description from account_types order by 2)"
     				);
     newRecord.add("update account_types set name = &u1, description = &u2");
@@ -77,7 +78,8 @@ public class staticData {
     		"select 'accounts' ,'acc_id' ,'Nazwa organizacji','Symbol konta','Nazwa konta','Opis konta','Waluta','Typ konta' UNION ALL " +
     	    "select 'accounts' ,'acc_id' ,'org_id' ,'symbol','name','description','currency_id','acc_type_id' UNION ALL " +
     	    "select 'accounts' ,'acc_id' ,'lov_organizations' ,'data','data','data','lov_currencies','lov_account_types' UNION ALL " +
-    		"(select 'accounts' , acc_id::text," +
+    	    "select '240' ,'10' ,'10' ,'5','100','100','10','10' UNION ALL " +
+    	    "(select 'accounts' , acc_id::text," +
     		"organizations.name , " +
     		"accounts.symbol , " +
     		"accounts.name , " +
@@ -99,9 +101,10 @@ public class staticData {
     newRecord = new ArrayList<String>();
     newRecord.add("Organizacje");
     newRecord.add(
-    		"select 'table_name','org_id' ,'Nazwa','Opis' UNION ALL " +
-    		"select 'table_name','org_id' ,'name','description' UNION ALL "+
-    		"select 'table_name','org_id' ,'data','data' UNION ALL "+
+    		"select 'organizations','org_id' ,'Nazwa','Opis' UNION ALL " +
+    		"select 'organizations','org_id' ,'name','description' UNION ALL "+
+    		"select 'organizations','org_id' ,'data','data' UNION ALL "+
+    		"select '240' ,'10' ,'240' ,'240' UNION ALL " +
     		"(select 'organizations' , org_id::text, name, description from organizations order by 2) " 
     		);
     

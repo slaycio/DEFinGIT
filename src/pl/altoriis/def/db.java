@@ -37,6 +37,7 @@ public class db {
 	public void updateData(String update){
 		
 		try {
+			//System.out.println(update);	
 			st.executeUpdate(update);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -52,18 +53,20 @@ public class db {
 	
 	
 		ArrayList<ArrayList<String>> arResult = new ArrayList<ArrayList<String>>(); 
-		//ArrayList<String> colNames1 = new ArrayList<String>(); 
+		//ArrayList<String> colLn = new ArrayList<String>(); 
 		//ArrayList<String> colNames2 = new ArrayList<String>(); 
 
 		try {
 
+			//System.out.println(query);	
 			rs = st.executeQuery(query);
 			//for (int v =1;v <= rs.getMetaData().getColumnCount();v++){
-			//colNames1.add(rs.getMetaData().getColumnLabel(v));
+			//colLn.add(Integer.toString(rs.getMetaData().));
 			//colNames2.add(rs.getMetaData().getColumnName(v));
 			//}
-			//arResult.add(colNames1);
+			//arResult.add(colLn);
 			//arResult.add(colNames2);
+			
 	
 			while (rs.next()) {
 			ArrayList<String> arRow = new ArrayList<String>();
