@@ -3,9 +3,7 @@ package pl.altoriis.def;
 
 
 import java.util.ArrayList;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -21,14 +19,24 @@ class defTable  {
 	private static ArrayList<Control> arControl;
 	private static ArrayList<TableEditor> arEditor;
 	private Boolean isEdited = false;
+	private static ArrayList<String> arMap;
+	private static ArrayList<String> arColNames;
+	private static ArrayList<ArrayList<ArrayList<String>>>  arLovs;
+
 	
 	public defTable(Composite parent, int style) {
 				
-		set(new Table(parent, style));	
+		//set(new Table(parent, style));	
+		localTable = new Table(parent, style);
+		arMap = new ArrayList<String>();
+		arColNames = new ArrayList<String>();
+	
 		// TODO Auto-generated constructor stub
 	}
 
-		
+	
+	
+			
 	public void clearTable(){
 	
 		localTable.setRedraw(false);
@@ -36,6 +44,15 @@ class defTable  {
 		while (localTable.getColumnCount() > 0) {
 			localTable.getColumns()[0].dispose();
 		}
+		
+		for (int u = 0; u < arMap.size(); u++) {
+			arMap.removeAll(arMap);
+		}
+		for (int u = 0; u < arColNames.size(); u++) {
+			arColNames.removeAll(arColNames);
+		}
+		
+		
 		localTable.setRedraw(true);
 	}
 	
@@ -47,25 +64,35 @@ class defTable  {
 		
 		for (int a = 0; a < input.get(0).size();a++){
 			TableColumn tNColumn = new TableColumn(localTable, SWT.NONE);
-			
+	
+			arMap.add(input.get(2).get(a));
+			arColNames.add(input.get(1).get(a));
+			//System.out.println(input.get(1).get(a));
 			if (a <2){
 			tNColumn.setWidth(0);
 			}else {
 			tNColumn.setWidth((localTable.getSize().x / (input.get(0).size()-2) ) - 2);
 			}
 			tNColumn.setText(input.get(0).get(a));
+				
 			}
-		for (int w = 1; w < input.size(); w++) {
+		
+		//localTable.setSortColumn(localTable.getColumn(2));
+		//localTable.setSortDirection(SWT.DOWN);
+		// by³o 3
+		for (int w = 3; w < input.size(); w++) {
 			TableItem item = new TableItem(localTable, SWT.NONE);
 			for(int g = 0;g < input.get(w).size();g++){
 				item.setText(g,input.get(w).get(g));
 				}	
 			}
 		
-			
+		
+		localTable.update();
 		
 		localTable.setRedraw(true);
 	}
+	
 	
 	
 		
@@ -79,54 +106,40 @@ class defTable  {
 		
 		arEditor = new ArrayList<TableEditor>();
 		arControl = new ArrayList<Control>();
-// TU TRZBA TE MAPY WYKMINIC I ZROBIC £ADNIE
-		ArrayList<String> mapa =  new ArrayList<String>();
-		
-		mapa.add("Ukryta");
-		mapa.add("Ukryta");
-		mapa.add("Text");
-		mapa.add("Combo");
-		mapa.add("Text");
-		mapa.add("Combo");
-		mapa.add("Text");
-		mapa.add("Text");
-		mapa.add("Combo");
-		
-		db fk = new db();
-		
-		// TODO trzeba zrobiæ by mozna podac do query liste paramatrów
-		// przeladujemy wywolanie tej metody.
-		//Query query = em.createQuery("SELECT p FROM Pracownik p WHERE p.imie = :imie");
-	   // query.setParameter("imie", "Jacek");
-		
-		ArrayList<ArrayList<String>> mapaX = fk.getData("select fk.table_name, col.column_name " +
-		"from information_schema.referential_constraints ref, "+
-		"information_schema.table_constraints fk, "+
-		"information_schema.constraint_column_usage col "+
-		"where ref.constraint_name = fk.constraint_name "+
-		"and col.constraint_name = fk.constraint_name ");
-		
-		
-		
-	
-		
+		arLovs = new ArrayList<ArrayList<ArrayList<String>>>();
+		//arLovMap =  new ArrayList<Integer>();
+			
 		// to przygotowuje odpowiednia ilosc combo z danymi i edytorów  do nich
-	
 		
 		
 		for (int z = 0; z < localTable.getColumnCount(); z++) {
+						
+			if (arMap.get(z) != null ) {
 			
-			if (mapa.get(z) != null ) {
-				if (mapa.get(z).toString() =="Text") {
-				
+				//System.out.println(arMap.get(z).toString());
+				//System.out.println(localTable.getColumn(z).getToolTipText().getClass());
+				if (arMap.get(z).toString().startsWith("lov") ) {
 			
-					arControl.add(new Text(localTable, SWT.NONE));
-				((Text) arControl.get(z)).setText("item " + z);
-				} else {
 					arControl.add(new Combo(localTable, SWT.NONE));
-				((Combo) arControl.get(z)).add("item " + z);
-				((Combo) arControl.get(z)).add("item " + (z+1));}
-				arEditor.add(new TableEditor(localTable));
+					
+					arLovs.add( mainWindow.st.lovData(arMap.get(z).toString().substring(4)));
+					//arLovMap.add(z);
+					//ArrayList<ArrayList<String>> newLov= mainWindow.st.lovData(	arMap.get(z).toString().substring(4));
+					
+					for (int e = 0; e < arLovs.get(arLovs.size()-1).size(); e++)	{
+					((Combo) arControl.get(z)).add(arLovs.get(arLovs.size()-1).get(e).get(1));
+					}
+					((Combo) arControl.get(z)).setText(localTable.getItem(s).getText(z));
+					
+				} else {
+					arLovs.add( new ArrayList<ArrayList<String>>());
+					arControl.add(new Text(localTable, SWT.NONE));
+					((Text) arControl.get(z)).setText(localTable.getItem(s).getText(z));
+						
+				} 
+				
+					arEditor.add(new TableEditor(localTable));
+				
 			}
 						
 			
@@ -135,8 +148,7 @@ class defTable  {
 	
 		
 		TableItem item = localTable.getItem(s);
-
-		
+				
 		for (int w = 0; w < localTable.getColumnCount()
 				; w++) {
 			
@@ -162,6 +174,84 @@ class defTable  {
 		}
 		
 	}
+	
+	
+	public void saveEditor() {
+		
+		String updateData = new String();
+		
+		
+		for (int i=0;i<localTable.getColumnCount();i++){
+			
+			String curText = new String();
+			
+			if (arMap.get(i).toString().startsWith("lov") ) {
+				 curText =  ((Combo) arControl.get(i)).getText();
+			} else {
+				 curText =  ((Text) arControl.get(i)).getText();
+				
+			}
+		
+		localTable.getItem(localTable.getSelectionIndex()).setText(i,curText);
+		
+		}
+		clearEditor();
+		
+		
+		
+		int l = localTable.getSelectionIndex();
+		
+		updateData = "update " + localTable.getItem(l).getText(0) + " set ";
+		
+		for (int e = 2; e < localTable.getColumnCount(); e++) {
+		
+			if (arMap.get(e).toString().startsWith("lov") ) {
+			
+				ArrayList<ArrayList<String>> temp = arLovs.get(e);
+				String out="";
+				
+				for (int k=0; k< temp.size(); k++){
+					
+					if (temp.get(k).get(1).equalsIgnoreCase(localTable.getItem(l).getText(e))){
+														
+						out = temp.get(k).get(0);
+					}
+				}
+				
+				if (e<localTable.getColumnCount()-1){
+				updateData = updateData + arColNames.get(e).toString()+ " = " + out +", " ;
+				
+				}else 
+					{updateData = updateData + arColNames.get(e).toString()+ " = " + out +" " ;}
+				
+						
+			
+			} else 
+			{
+			
+				if (e<localTable.getColumnCount()-1){
+				updateData =  updateData + arColNames.get(e).toString()+ " = '" + localTable.getItem(l).getText(e) + "', ";
+				
+				} else {
+					updateData =  updateData + arColNames.get(e).toString()+ " = '" + localTable.getItem(l).getText(e) + "' ";
+				}
+				
+			}
+			
+				
+			}
+		updateData =  updateData + " where "+ arColNames.get(1).toString() + " = " + localTable.getItem(l).getText(1);
+		System.out.println(updateData);
+		
+		db dbCon = new db();
+		dbCon.updateData(updateData);
+		dbCon.finalize();
+	
+		
+	
+		
+	}
+	
 	
 	public void clearEditor() {
 

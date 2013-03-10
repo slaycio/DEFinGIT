@@ -33,21 +33,37 @@ public class db {
 	}/* end of finalize() method */
 
 	
+	
+	public void updateData(String update){
+		
+		try {
+			st.executeUpdate(update);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+		
+	
 	public ArrayList<ArrayList<String>> getData(String query) {
 
 		ResultSet rs = null;
 	
 	
 		ArrayList<ArrayList<String>> arResult = new ArrayList<ArrayList<String>>(); 
-		ArrayList<String> colNames = new ArrayList<String>(); 
+		//ArrayList<String> colNames1 = new ArrayList<String>(); 
+		//ArrayList<String> colNames2 = new ArrayList<String>(); 
 
 		try {
 
 			rs = st.executeQuery(query);
-			for (int v =1;v <= rs.getMetaData().getColumnCount();v++){
-			colNames.add(rs.getMetaData().getColumnLabel(v));
-			}
-			arResult.add(colNames);
+			//for (int v =1;v <= rs.getMetaData().getColumnCount();v++){
+			//colNames1.add(rs.getMetaData().getColumnLabel(v));
+			//colNames2.add(rs.getMetaData().getColumnName(v));
+			//}
+			//arResult.add(colNames1);
+			//arResult.add(colNames2);
 	
 			while (rs.next()) {
 			ArrayList<String> arRow = new ArrayList<String>();

@@ -19,7 +19,7 @@ public class mainWindow {
 	private static Composite dictDataComp;
 	private static Shell shell;
 	private static Point act_size = new Point(1116, 600);
-	private static staticData st = new staticData();
+	public static staticData st = new staticData();
 	private static Button dictBtnUpdate;
 	private static Button dictBtnSave;
 	private static Button dictBtnDiscard;
@@ -105,7 +105,7 @@ public class mainWindow {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnSave) {
-					dictTable.clearEditor();
+					dictTable.saveEditor();
 					dictUpdateOff();
 				}
 			}
@@ -116,6 +116,7 @@ public class mainWindow {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnDiscard) {
+					
 					dictTable.clearEditor();
 					dictUpdateOff();
 				}
