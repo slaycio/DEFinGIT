@@ -45,7 +45,7 @@ public class db {
 	public void updateData(String update){
 		
 		try {
-			//System.out.println(update);	
+			System.out.println(update);	
 			st.executeUpdate(update);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -53,7 +53,13 @@ public class db {
 		}
 		
 	}
-		
+	
+	public ArrayList<ArrayList<String>> getPragma(String tName) {
+	
+	 return getData("pragma table_info("+tName+")");	
+	}
+	
+	
 	
 	public ArrayList<ArrayList<String>> getData(String query) {
 
@@ -65,7 +71,7 @@ public class db {
 		try {
 
 			rs = st.executeQuery(query);
-					
+			
 	
 			while (rs.next()) {
 			ArrayList<String> arRow = new ArrayList<String>();

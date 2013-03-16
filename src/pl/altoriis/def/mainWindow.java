@@ -25,6 +25,8 @@ public class mainWindow {
 	private static Button dictBtnSave;
 	private static Button dictBtnDiscard;
 	private static Button dictBtnAdd;
+	private static Button dictBtnDel;
+	//private static Button dictCBDel;
 	private static Combo dictCmbSelector;
 	public static Label infoBar;
 
@@ -34,6 +36,7 @@ public class mainWindow {
 		dictBtnDiscard.setEnabled(true);
 		dictBtnAdd.setEnabled(false);
 		dictCmbSelector.setEnabled(false);
+		dictBtnDel.setEnabled(false);
 		infoBar.setText("");
 	};
 
@@ -43,6 +46,7 @@ public class mainWindow {
 		dictBtnDiscard.setEnabled(false);
 		dictBtnAdd.setEnabled(true);
 		dictCmbSelector.setEnabled(true);
+		dictBtnDel.setEnabled(true);
 
 	};
 
@@ -52,6 +56,7 @@ public class mainWindow {
 		dictBtnDiscard.setEnabled(false);
 		dictBtnAdd.setEnabled(true);
 		dictCmbSelector.setEnabled(true);
+		dictBtnDel.setEnabled(false);
 		infoBar.setText("");
 
 	};
@@ -98,6 +103,13 @@ public class mainWindow {
 		dictBtnAdd = new Button(buttons, SWT.NONE);
 		dictBtnAdd.setSize(60, 25);
 		dictBtnAdd.setText("New Line");
+		
+		dictBtnDel = new Button(buttons, SWT.NONE);
+		dictBtnDel.setSize(60, 25);
+		dictBtnDel.setText("Delete");
+		
+		//dictCBDel = new Button(buttons, SWT.CHECK);
+		//dictCBDel.setText("Activate delete");
 
 		dictBtnsOff();
 
@@ -118,9 +130,15 @@ public class mainWindow {
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnSave) {
 					dictTable.saveEditor();
+					dictTable.addMetaData(
+							st.get().get(dictCmbSelector.getSelectionIndex()).get(6),
+							st.get().get(dictCmbSelector.getSelectionIndex()).get(7),
+							st.retAsArray(st.get().get(dictCmbSelector.getSelectionIndex()).get(4)),
+							st.retAsArray(st.get().get(dictCmbSelector.getSelectionIndex()).get(3)),
+							st.retAsArray(st.get().get(dictCmbSelector.getSelectionIndex()).get(2)),
+							st.retAsArray(st.get().get(dictCmbSelector.getSelectionIndex()).get(5)));
 					dictTable.populateTable(getDictTableData(dictCmbSelector.getSelectionIndex()));
-					
-					dictUpdateOff();
+					dictBtnsOff();
 				}
 			}
 		};
@@ -133,7 +151,12 @@ public class mainWindow {
 
 					dictTable.clearEditor();
 					dictTable.discardNewline();
-					dictUpdateOff();
+					
+					if (dictTable.get().getSelectionCount() == 0){
+						dictBtnsOff();
+					}else { 
+						dictUpdateOff();
+						}
 				}
 			}
 		};
@@ -155,13 +178,39 @@ public class mainWindow {
 		};
 		dictBtnAdd.addListener(SWT.Selection, dictAddBtnListener);
 
+		
+		Listener dictDelBtnListener = new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				if (event.widget == dictBtnDel) {
+															
+					
+					if (dictTable.deleteLine()) {
+						dictBtnsOff();
+					}
+				}
+			}
+		};
+		dictBtnDel.addListener(SWT.Selection, dictDelBtnListener);
+		
+		
+		
 		dictCmbSelector.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 			
-
+				
 				dictBtnsOff();
-				dictTable.populateTable(getDictTableData(dictCmbSelector.getSelectionIndex()));
+				Integer tempIndex = dictCmbSelector.getSelectionIndex();
+				//dictTable.clearTable();
+				dictTable.addMetaData(
+						st.get().get(tempIndex).get(6),
+						st.get().get(tempIndex).get(7),
+						st.retAsArray(st.get().get(tempIndex).get(4)),
+						st.retAsArray(st.get().get(tempIndex).get(3)),
+						st.retAsArray(st.get().get(tempIndex).get(2)),
+						st.retAsArray(st.get().get(tempIndex).get(5)));
+				dictTable.populateTable(getDictTableData(tempIndex));
 				
 			
 				dictTable.get().addSelectionListener(new SelectionListener() {
@@ -189,10 +238,15 @@ public class mainWindow {
 		
 		ArrayList<ArrayList<String>> dictTableDataTemp = dbCon.getData(st.get().get(indexOf).get(1));
 		//System.out.println(st.get().get(0).get(2));
-		dictTableDataTemp.add(0,st.retAsArray(st.get().get(0).get(5)));
-		dictTableDataTemp.add(0,st.retAsArray(st.get().get(0).get(4)));
-		dictTableDataTemp.add(0,st.retAsArray(st.get().get(0).get(3)));
-		dictTableDataTemp.add(0,st.retAsArray(st.get().get(0).get(2)));
+		
+		
+		//dictTableDataTemp.add(0,st.retAsArray(st.get().get(indexOf).get(5)));
+		//dictTableDataTemp.add(0,st.retAsArray(st.get().get(indexOf).get(4)));
+		//dictTableDataTemp.add(0,st.retAsArray(st.get().get(indexOf).get(3)));
+		//dictTableDataTemp.add(0,st.retAsArray(st.get().get(indexOf).get(2)));
+		
+	
+		
 		dbCon.finalize();
 		
 		return dictTableDataTemp;
@@ -363,5 +417,4 @@ public class mainWindow {
 			e.printStackTrace();
 		}
 	}
-
 }

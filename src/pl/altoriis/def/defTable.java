@@ -10,22 +10,33 @@ import org.eclipse.swt.widgets.*;
 class defTable {
 
 	private Table localTable;
+	private Boolean isEdited = false;
 	private static ArrayList<Control> arControl;
 	private static ArrayList<TableEditor> arEditor;
-	private Boolean isEdited = false;
 	private static ArrayList<String> arMap;
 	private static ArrayList<String> arColNames;
+	private static ArrayList<String> arColDesc;
 	private static ArrayList<String> arLn;
 	private static ArrayList<ArrayList<ArrayList<String>>> arLovs;
+	private static String tableName;
+	private static String pKeyName;
 
 	public defTable(Composite parent, int style) {
 
 		localTable = new Table(parent, style);
-		arMap = new ArrayList<String>();
-		arColNames = new ArrayList<String>();
-		arLn = new ArrayList<String>();
-
-		// TODO Auto-generated constructor stub
+		
+	}
+	
+	public void addMetaData(String inTableName,String inpKeyName,ArrayList<String> inMap ,ArrayList<String> inColNames,ArrayList<String> inColDesc, ArrayList<String> inLn) {
+		
+		clearTable();
+		tableName = inTableName;
+		pKeyName = inpKeyName;
+		arMap = inMap;
+		arColNames = inColNames;
+		arColDesc = inColDesc;
+		arLn = inLn;
+		
 	}
 
 	public void clearTable() {
@@ -35,7 +46,8 @@ class defTable {
 		while (localTable.getColumnCount() > 0) {
 			localTable.getColumns()[0].dispose();
 		}
-
+		if (arMap != null && arColNames != null && arLn != null && arColDesc != null){
+		
 		for (int u = 0; u < arMap.size(); u++) {
 			arMap.removeAll(arMap);
 		}
@@ -45,32 +57,36 @@ class defTable {
 		for (int u = 0; u < arLn.size(); u++) {
 			arLn.removeAll(arLn);
 		}
-
+		for (int u = 0; u < arColDesc.size(); u++) {
+			arColDesc.removeAll(arColDesc);
+		}
+		}
+		tableName = null;
+		pKeyName = null;
+		
 		localTable.setRedraw(true);
 	}
 
 	public void populateTable(ArrayList<ArrayList<String>> input) {
-
-		localTable.setRedraw(false);
-		clearTable();
-
+		
+				
+		System.out.println(input.get(0).size());
+		
 		for (int a = 0; a < input.get(0).size(); a++) {
 			TableColumn tNColumn = new TableColumn(localTable, SWT.NONE);
-
-			arLn.add(input.get(3).get(a));
-			arMap.add(input.get(2).get(a));
-			arColNames.add(input.get(1).get(a));
-
-			if (a < 2) {
+		
+			if (a < 1) {
 				tNColumn.setWidth(0);
 			} else {
-				tNColumn.setWidth((localTable.getSize().x / (input.get(0).size() - 2)) - 2);
+			
+				tNColumn.setWidth((localTable.getSize().x / (input.get(0).size()-1))-2);	
 			}
-			tNColumn.setText(input.get(0).get(a));
+	
+			tNColumn.setText(arColDesc.get(a));
 
 		}
-
-		for (int w = 4; w < input.size(); w++) {
+		// by³o 4
+		for (int w = 0; w < input.size(); w++) {
 			TableItem item = new TableItem(localTable, SWT.NONE);
 			for (int g = 0; g < input.get(w).size(); g++) {
 				item.setText(g, input.get(w).get(g));
@@ -92,8 +108,11 @@ class defTable {
 			arControl = new ArrayList<Control>();
 			arLovs = new ArrayList<ArrayList<ArrayList<String>>>();
 
+					
 			for (int z = 0; z < localTable.getColumnCount(); z++) {
 
+				
+				
 				if (arMap.get(z) != null) {
 
 					if (arMap.get(z).toString().startsWith("lov")) {
@@ -150,9 +169,9 @@ class defTable {
 
 		String updateData = new String();
 		Integer nullCounter = 0;
-
-		for (int i = 2; i < localTable.getColumnCount(); i++) {
-
+	
+		for (int i = 1; i < localTable.getColumnCount(); i++) {
+			
 			String curText = new String();
 
 			if (arMap.get(i).toString().startsWith("lov")) {
@@ -175,9 +194,9 @@ class defTable {
 
 			if (!(localTable.getItem(l).getText(0).length() == 0)) {
 
-				updateData = "update " + localTable.getItem(l).getText(0) + " set ";
+				updateData = "update " + tableName + " set ";
 
-				for (int e = 2; e < localTable.getColumnCount(); e++) {
+				for (int e = 1; e < localTable.getColumnCount(); e++) {
 
 					if (arMap.get(e).toString().startsWith("lov")) {
 
@@ -196,7 +215,7 @@ class defTable {
 							updateData = updateData + arColNames.get(e).toString() + " = " + out + ", ";
 
 						} else {
-							updateData = updateData + arColNames.get(e).toString() + " = " + out + " ";
+							updateData = updateData + arColNames.get(e).toString() + " = " + out + "";
 						}
 
 					} else {
@@ -211,14 +230,14 @@ class defTable {
 					}
 
 				}
-				updateData = updateData + " where " + arColNames.get(1).toString() + " = " + localTable.getItem(l).getText(1);
+				updateData = updateData + " where " + pKeyName + " = " + localTable.getItem(l).getText(0);
 
 			} else {
 				// TUTAJ INSERT
 
-				updateData = "insert into  " + arMap.get(0).toString() + " ( ";
+				updateData = "insert into " + tableName + " (";
 
-				for (int e = 2; e < localTable.getColumnCount(); e++) {
+				for (int e = 1; e < localTable.getColumnCount(); e++) {
 
 					if (arMap.get(e).toString().startsWith("lov")) {
 
@@ -226,7 +245,7 @@ class defTable {
 							updateData = updateData + arColNames.get(e).toString() + ", ";
 
 						} else {
-							updateData = updateData + arColNames.get(e).toString() + " ";
+							updateData = updateData + arColNames.get(e).toString() + "";
 						}
 
 					} else {
@@ -235,14 +254,14 @@ class defTable {
 							updateData = updateData + arColNames.get(e).toString() + ", ";
 
 						} else {
-							updateData = updateData + arColNames.get(e).toString() + " ";
+							updateData = updateData + arColNames.get(e).toString() + "";
 						}
 
 					}
 				}
-				updateData = updateData + " ) values (";
+				updateData = updateData + ") values (";
 
-				for (int e = 2; e < localTable.getColumnCount(); e++) {
+				for (int e = 1; e < localTable.getColumnCount(); e++) {
 
 					if (arMap.get(e).toString().startsWith("lov")) {
 
@@ -261,7 +280,7 @@ class defTable {
 							updateData = updateData + out + ", ";
 
 						} else {
-							updateData = updateData + out + " ";
+							updateData = updateData + out + "";
 						}
 
 					} else {
@@ -277,7 +296,7 @@ class defTable {
 
 				}
 
-				updateData = updateData + " )";
+				updateData = updateData + ")";
 
 			}
 
@@ -292,10 +311,14 @@ class defTable {
 	}
 
 	public void discardNewline() {
-		if ((localTable.getItem(localTable.getSelectionIndex()).getText(0).length() == 0)) {
-
-			localTable.getItem(localTable.getSelectionIndex()).dispose();
+		//if ((localTable.getItem(localTable.getSelectionIndex()).getText(0).length() == 0)) {
+		for (int t = 0; t< localTable.getItemCount();t++)
+		if ((localTable.getItem(t).getText(0).length() == 0)) {
+			localTable.getItem(t).dispose();
 		}
+		
+		
+		//localTable.pack();
 	}
 
 	public Boolean addLine() {
@@ -306,11 +329,35 @@ class defTable {
 		return addEditor();
 
 	}
+	
+	public boolean deleteLine(){
+		
+		String deleteData = new String();
+		
+		Integer s = localTable.getSelectionIndex();
+
+		if (s != null) {
+		
+		deleteData = "delete from " + tableName + " where " + pKeyName + " = " + localTable.getItem(localTable.getSelectionIndex()).getText(0);;
+		
+		db dbCon = new db();
+		dbCon.updateData(deleteData);
+		dbCon.finalize();
+		localTable.remove(s);
+		
+			return true;
+		}else 
+		{
+			return false;
+		}
+	}
 
 	public void clearEditor() {
 
 		if (isEdited) {
 
+			discardNewline();
+			
 			for (int u = 0; u < arControl.size(); u++) {
 				((Control) arControl.get(u)).dispose();
 
@@ -319,6 +366,15 @@ class defTable {
 				arEditor.get(y).dispose();
 
 			}
+		/*	for (int y = 0; y < arLovs.size(); y++) {
+				for (int z = 0; z < arLovs.get(y).size(); z++) {
+					
+					(arLovs.get(y).get(z)).clear();
+					}
+				arLovs.get(y).clear();
+			}*/
+			
+			
 			isEdited = false;
 		}
 
