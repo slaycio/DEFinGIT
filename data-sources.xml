@@ -3,4 +3,7 @@
 	<data-source id="postgresql-1361869255768--1073236755" provider="generic" driver="postgresql" name="PostgreSQL - DEF" create-date="1361869255768" save-password="true" show-system-objects="true" read-only="false">
 		<connection host="localhost" port="5432" server="" database="DEF" url="jdbc:postgresql://localhost:5432/DEF" user="postgres" password="QhUHOhNUVw5l8w==" type="dev"/>
 	</data-source>
+	<data-source id="sqlite_zentus-1363445801116--444421552" provider="generic" driver="sqlite_zentus" name="SQLite - def.db" create-date="1363445801116" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="C:\Dev\eclipse_wrk\DEFinGIT\src\pl\altoriis\def\def.db" url="jdbc:sqlite:C:\Dev\eclipse_wrk\DEFinGIT\src\pl\altoriis\def\def.db" user="" type="dev"/>
+	</data-source>
 </data-sources>

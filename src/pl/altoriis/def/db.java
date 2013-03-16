@@ -10,15 +10,23 @@ public class db {
 	private Statement st = null;
 	
 	
-	public db() {
+	public db()  {
 		try {
-
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			
 			String url = this.properties.url;
-			String user = this.properties.user;
-			String password = this.properties.password;
+			//String user = this.properties.user;
+			//String password = this.properties.password;
 
-			cn = DriverManager.getConnection(url, user, password);
-			st = cn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			cn = DriverManager.getConnection(url //, user, password
+					);
+			st = cn.createStatement();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -53,20 +61,11 @@ public class db {
 	
 	
 		ArrayList<ArrayList<String>> arResult = new ArrayList<ArrayList<String>>(); 
-		//ArrayList<String> colLn = new ArrayList<String>(); 
-		//ArrayList<String> colNames2 = new ArrayList<String>(); 
 
 		try {
 
-			//System.out.println(query);	
 			rs = st.executeQuery(query);
-			//for (int v =1;v <= rs.getMetaData().getColumnCount();v++){
-			//colLn.add(Integer.toString(rs.getMetaData().));
-			//colNames2.add(rs.getMetaData().getColumnName(v));
-			//}
-			//arResult.add(colLn);
-			//arResult.add(colNames2);
-			
+					
 	
 			while (rs.next()) {
 			ArrayList<String> arRow = new ArrayList<String>();

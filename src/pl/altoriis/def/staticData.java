@@ -11,14 +11,15 @@ public class staticData {
 	public ArrayList<ArrayList<String>> lovData(String tName){
 		
 		
-		String lovPKeyQuery = 
-				"select c.column_name " +
+		String lovPKeyQuery = "acc_type_id" ;
+			/*	"select c.column_name " +
 				"from information_schema.constraint_column_usage c, " +
 				"information_schema.table_constraints t " +
 				"where c.table_name = t.table_name " +
 				"and c.constraint_name = t.constraint_name " +
 				"and t.constraint_type = 'PRIMARY KEY' " +
-				"and t.table_name = '" +tName+ "'";
+				"and t.table_name = '" +tName+ "'";*/
+		
 		
 		
 		
@@ -46,40 +47,45 @@ public class staticData {
 	
 		output.add(newRecord);
 	}
+	
+	public ArrayList<String> retAsArray(String inString) {
+		ArrayList<String> outArray =  new ArrayList<String>();
 		
+		String[] tempString = inString.split(":");
+		
+		for (int e = 0; e < tempString.length ;e++){
+			outArray.add(tempString[e]);
+		}
+		
+		return outArray;
+		
+	}
+	
 	
 	public staticData() {
 	
 	// 0 name of dictionary
 	// 1 database query
-	// 2 database update 
-	// 3 database insert  
+	// 2 column description
+	// 3 column name
+	// 4 column type
+	// 5 column size
 
 	ArrayList<String> newRecord;
 	
 	newRecord = new ArrayList<String>();
     newRecord.add("Typy kont");
-    newRecord.add(	
-    		"select 'account_types' ,'acc_type_id' ,'Nazwa','Opis' UNION ALL " +
-    		"select 'account_types' ,'acc_type_id' ,'name' ,'description' UNION ALL " +
-    		"select 'account_types' ,'acc_type_id' ,'data' ,'data' UNION ALL " +
-    		"select '240' ,'10' ,'240' ,'240' UNION ALL " +
-    		"(select 'account_types', acc_type_id::text, name, description from account_types order by 2)"
-    				);
-    newRecord.add("update account_types set name = &u1, description = &u2");
-    newRecord.add("insert into account_types (name, description) values ");
-  
+    newRecord.add("select 'account_types', acc_type_id, name, description from account_types order by 2");
+    newRecord.add("account_types:acc_type_id:Nazwa:Opis");
+    newRecord.add("account_types:acc_type_id:name:description");
+    newRecord.add("account_types:acc_type_id:data:data");
+    newRecord.add("240:10:240:240");
     newInstance(newRecord);
   
     
     newRecord = new ArrayList<String>();
     newRecord.add("Konta");
-    newRecord.add(
-    		"select 'accounts' ,'acc_id' ,'Nazwa organizacji','Symbol konta','Nazwa konta','Opis konta','Waluta','Typ konta' UNION ALL " +
-    	    "select 'accounts' ,'acc_id' ,'org_id' ,'symbol','name','description','currency_id','acc_type_id' UNION ALL " +
-    	    "select 'accounts' ,'acc_id' ,'lov_organizations' ,'data','data','data','lov_currencies','lov_account_types' UNION ALL " +
-    	    "select '240' ,'10' ,'10' ,'5','100','100','10','10' UNION ALL " +
-    	    "(select 'accounts' , acc_id::text," +
+    newRecord.add("select 'accounts' , acc_id," +
     		"organizations.name , " +
     		"accounts.symbol , " +
     		"accounts.name , " +
@@ -89,28 +95,23 @@ public class staticData {
     		"from accounts , account_types , currencies , organizations " +
     		"where accounts.acc_type_id = account_types.acc_type_id " +
     		"and accounts.currency_id = currencies.currency_id " +
-    		"and accounts.org_id =organizations.org_id order by 2)" 
+    		"and accounts.org_id =organizations.org_id order by 2" 
     		);
-    newRecord.add(" ");
-    newRecord.add(" ");
-    
-    
+    newRecord.add("accounts:acc_id:Nazwa organizacji:Symbol konta:Nazwa konta:Opis konta:Waluta:Typ konta");
+    newRecord.add("accounts:acc_id:org_id:symbol:name:description:currency_id:acc_type_id");
+    newRecord.add("accounts:acc_id:lov_organizations:data:data:data:lov_currencies:lov_account_types");
+    newRecord.add("240:10:10:5:100:100:10:10 ");
     newInstance(newRecord);
     
     
     newRecord = new ArrayList<String>();
     newRecord.add("Organizacje");
-    newRecord.add(
-    		"select 'organizations','org_id' ,'Nazwa','Opis' UNION ALL " +
-    		"select 'organizations','org_id' ,'name','description' UNION ALL "+
-    		"select 'organizations','org_id' ,'data','data' UNION ALL "+
-    		"select '240' ,'10' ,'240' ,'240' UNION ALL " +
-    		"(select 'organizations' , org_id::text, name, description from organizations order by 2) " 
-    		);
-    
-    newInstance(newRecord);
-    newRecord.add(" ");
- 	
+    newRecord.add("select 'organizations', org_id, name, description from organizations order by 2");
+    newRecord.add("organizations:org_id:Nazwa:Opis");
+    newRecord.add("organizations:org_id:name:description");
+    newRecord.add("organizations:org_id:data:data");
+    newRecord.add("240:10:240:240");
+    newInstance(newRecord);	
    
 	}
 	

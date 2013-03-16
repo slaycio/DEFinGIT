@@ -118,11 +118,8 @@ public class mainWindow {
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnSave) {
 					dictTable.saveEditor();
-					db dbCon = new db();
-					ArrayList<ArrayList<String>> dictTableData = dbCon.getData(st.get().get(dictCmbSelector.getSelectionIndex()).get(1));
-
-					dictTable.populateTable(dictTableData);
-					dbCon.finalize();
+					dictTable.populateTable(getDictTableData(dictCmbSelector.getSelectionIndex()));
+					
 					dictUpdateOff();
 				}
 			}
@@ -161,15 +158,13 @@ public class mainWindow {
 		dictCmbSelector.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
-				db dbCon = new db();
-				ArrayList<ArrayList<String>> dictTableData = dbCon.getData(st.get().get(dictCmbSelector.getSelectionIndex()).get(1));
+			
 
 				dictBtnsOff();
-				dictTable.populateTable(dictTableData);
-
+				dictTable.populateTable(getDictTableData(dictCmbSelector.getSelectionIndex()));
+				
+			
 				dictTable.get().addSelectionListener(new SelectionListener() {
-
 					@Override
 					public void widgetDefaultSelected(SelectionEvent arg0) {
 						dictTable.clearEditor();
@@ -182,10 +177,25 @@ public class mainWindow {
 						dictUpdateOff();
 					}
 				}); // koniec listnera tabeli roboczej
-				dbCon.finalize();
+				
 			}
 		}); // koniec listenera comboboxa
 
+	}
+	
+	private ArrayList<ArrayList<String>> getDictTableData(Integer indexOf){
+		
+		db dbCon = new db();
+		
+		ArrayList<ArrayList<String>> dictTableDataTemp = dbCon.getData(st.get().get(indexOf).get(1));
+		//System.out.println(st.get().get(0).get(2));
+		dictTableDataTemp.add(0,st.retAsArray(st.get().get(0).get(5)));
+		dictTableDataTemp.add(0,st.retAsArray(st.get().get(0).get(4)));
+		dictTableDataTemp.add(0,st.retAsArray(st.get().get(0).get(3)));
+		dictTableDataTemp.add(0,st.retAsArray(st.get().get(0).get(2)));
+		dbCon.finalize();
+		
+		return dictTableDataTemp;
 	}
 
 	private void setMainMenu() {
@@ -207,7 +217,11 @@ public class mainWindow {
 		mntmMenu_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				
 				dictTable.clearEditor();
+				
+				
+				
 			}
 		});
 

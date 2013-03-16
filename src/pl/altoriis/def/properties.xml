@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database>
-<url>jdbc:postgresql://localhost/DEF</url>
+<url>jdbc:sqlite:./src/pl/altoriis/def/def.db</url>
 <user>postgres</user>
 <password>1qaz2wsx</password>
 </database>
