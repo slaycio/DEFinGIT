@@ -1,6 +1,6 @@
 
 CREATE TABLE account_types (
-    acc_type_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     name varchar(2048) NOT NULL,
     description varchar(2048),
     lang varchar(5),
@@ -11,7 +11,7 @@ CREATE TABLE account_types (
 
 
 CREATE TABLE accounts (
-    acc_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     org_id integer NOT NULL,
     name varchar(2048) NOT NULL,
     acc_type_id integer NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE accounts (
 
 
 CREATE TABLE currencies (
-    currency_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     name varchar(2048) NOT NULL,
     symbol varchar(5) NOT NULL,
     description varchar(2048),
@@ -37,7 +37,7 @@ CREATE TABLE currencies (
 
 
 CREATE TABLE org_type_asg (
-    org_asg_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     org_id integer NOT NULL,
     org_type_id integer NOT NULL,
    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
@@ -46,7 +46,7 @@ CREATE TABLE org_type_asg (
 
 
 CREATE TABLE organization_types (
-    org_type_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     name varchar(2048) NOT NULL,
     description varchar(2048),
     lang varchar(5) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE organization_types (
 
 
 CREATE TABLE organizations (
-    org_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     name varchar(2048) NOT NULL,
     description varchar(2048),
    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
@@ -67,7 +67,7 @@ CREATE TABLE organizations (
 
 
 CREATE TABLE schedule_groups (
-    sgr_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     name varchar(2048) NOT NULL,
     description varchar(2048),
     active varchar(1) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE schedule_groups (
 
 
 CREATE TABLE schedule_types (
-    sch_type_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     sch_type_chr varchar(1) NOT NULL,
     name varchar(2048) NOT NULL,
     description varchar(2048),
@@ -90,7 +90,7 @@ CREATE TABLE schedule_types (
 
 
 CREATE TABLE schedules (
-    sch_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     sgr_id integer NOT NULL,
     name varchar(2048) NOT NULL,
     description varchar(2048),
@@ -104,7 +104,7 @@ CREATE TABLE schedules (
 
 
 CREATE TABLE trx_headers (
-    trx_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     org_id integer NOT NULL,
     sch_id integer,
     trx_type_id integer NOT NULL,
@@ -121,7 +121,7 @@ CREATE TABLE trx_headers (
 
 
 CREATE TABLE trx_lines (
-    trx_line_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     trx_id integer NOT NULL,
     acc_id integer NOT NULL,
     description varchar(2048),
@@ -134,7 +134,7 @@ CREATE TABLE trx_lines (
 
 
 CREATE TABLE trx_types (
-    trx_type_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
     name varchar(2048) NOT NULL,
     description varchar(2048),
     lang varchar(5),
@@ -181,13 +181,4 @@ INSERT INTO accounts (org_id, name, acc_type_id, symbol, description, currency_i
 
 INSERT INTO org_type_asg (org_id, org_type_id) VALUES (1,1);
 INSERT INTO org_type_asg (org_id, org_type_id) VALUES (2,3);
-
-
-
-
-
-select 'account_types', acc_type_id, name, description from account_types order by 2;
-select 'account_types', cast(acc_type_id as TEXT), name, description from account_types order by 2;
-
-
 

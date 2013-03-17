@@ -10,6 +10,7 @@ import java.io.*;
 
 public class properties {
 
+	public Integer dbType;
 	public String url;
 	public String user;
 	public String password;
@@ -27,8 +28,10 @@ public class properties {
 
 			// System.out.println("Root element :" +
 			// doc.getDocumentElement().getNodeName());
+			
 
 			NodeList nList = doc.getElementsByTagName("database");
+			 System.out.println("dupa"+nList);
 
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 
@@ -38,10 +41,35 @@ public class properties {
 
 					Element eElement = (Element) nNode;
 
-					this.url = eElement.getElementsByTagName("url").item(0).getTextContent();
-					this.user = eElement.getElementsByTagName("user").item(0).getTextContent();
-					this.password = eElement.getElementsByTagName("password").item(0).getTextContent();
-
+					this.dbType = Integer.parseInt(eElement.getElementsByTagName("type").item(0).getTextContent());
+					
+					if (dbType == 0){
+					url = eElement.getElementsByTagName("url:0").item(0).getTextContent();
+					user = eElement.getElementsByTagName("user:0").item(0).getTextContent();
+					password = eElement.getElementsByTagName("password:0").item(0).getTextContent();
+					} 
+					if (dbType == 1) {
+						try {
+							Class.forName("org.sqlite.JDBC");
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					url = eElement.getElementsByTagName("url:1").item(0).getTextContent();	
+					}
+					if (dbType == 2) {
+						try {
+							Class.forName("com.mysql.jdbc.Driver");
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					url = eElement.getElementsByTagName("url:2").item(0).getTextContent();	
+					user = eElement.getElementsByTagName("user:2").item(0).getTextContent();
+					password = eElement.getElementsByTagName("password:2").item(0).getTextContent();
+					}
+					
+				
 				}
 			}
 		} catch (Exception e) {

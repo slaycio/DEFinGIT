@@ -5,27 +5,21 @@ import java.util.ArrayList;
 
 public class db {
 
-	private final properties properties = new properties();
+	private static properties properties = new properties();
 	private Connection cn = null;
 	private Statement st = null;
 	
 	
 	public db()  {
-		try {
-			Class.forName("org.sqlite.JDBC");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		try {
+			System.out.println(properties.dbType);
+			System.out.println(properties.url);
+			System.out.println(properties.user);
+			System.out.println(properties.password);
 			
-			String url = this.properties.url;
-			//String user = this.properties.user;
-			//String password = this.properties.password;
-
-			cn = DriverManager.getConnection(url //, user, password
-					);
+			cn = DriverManager.getConnection(properties.url , properties.user, properties.password);
 			st = cn.createStatement();
 		} catch (SQLException ex) {
 			ex.printStackTrace();

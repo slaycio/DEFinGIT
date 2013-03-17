@@ -311,14 +311,12 @@ class defTable {
 	}
 
 	public void discardNewline() {
-		//if ((localTable.getItem(localTable.getSelectionIndex()).getText(0).length() == 0)) {
 		for (int t = 0; t< localTable.getItemCount();t++)
 		if ((localTable.getItem(t).getText(0).length() == 0)) {
 			localTable.getItem(t).dispose();
 		}
+	
 		
-		
-		//localTable.pack();
 	}
 
 	public Boolean addLine() {
@@ -366,15 +364,7 @@ class defTable {
 				arEditor.get(y).dispose();
 
 			}
-		/*	for (int y = 0; y < arLovs.size(); y++) {
-				for (int z = 0; z < arLovs.get(y).size(); z++) {
 					
-					(arLovs.get(y).get(z)).clear();
-					}
-				arLovs.get(y).clear();
-			}*/
-			
-			
 			isEdited = false;
 		}
 

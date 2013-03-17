@@ -12,11 +12,11 @@ public class staticData {
 						
 		db dbCon = new db();
 		
-		ArrayList<ArrayList<String>> lovPKey = dbCon.getPragma(tName);
+		//ArrayList<ArrayList<String>> lovPKey = dbCon.getPragma(tName);
 		
-		String lovQuery = "select "+ lovPKey.get(0).get(1).toString() + ", name from " +tName ;
+		//String lovQuery = "select "+ lovPKey.get(0).get(1).toString() + ", name from " +tName ;
 		
-		ArrayList<ArrayList<String>> lovDataOutput = dbCon.getData(lovQuery);
+		ArrayList<ArrayList<String>> lovDataOutput = dbCon.getData("select id, name from "+tName);
 			
 		dbCon.finalize();
 		return lovDataOutput;
@@ -63,19 +63,19 @@ public class staticData {
 	    
     newRecord = new ArrayList<String>();
     newRecord.add("Typy kont");
-    newRecord.add("select acc_type_id, name, description from account_types order by 2");
-    newRecord.add("acc_type_id:Nazwa:Opis");
-    newRecord.add("acc_type_id:name:description");
-    newRecord.add("acc_type_id:data:data");
+    newRecord.add("select id, name, description from account_types order by 2");
+    newRecord.add("id:Nazwa:Opis");
+    newRecord.add("id:name:description");
+    newRecord.add("id:data:data");
     newRecord.add("10:240:240");
     newRecord.add("account_types");
-    newRecord.add("acc_type_id");
+    newRecord.add("id");
     newInstance(newRecord);
   
     
     newRecord = new ArrayList<String>();
     newRecord.add("Konta");
-    newRecord.add("select acc_id," +
+    newRecord.add("select accounts.id," +
     		"organizations.name , " +
     		"accounts.symbol , " +
     		"accounts.name , " +
@@ -83,28 +83,28 @@ public class staticData {
     		"currencies.name , " +
     		"account_types.name  " +
     		"from accounts , account_types , currencies , organizations " +
-    		"where accounts.acc_type_id = account_types.acc_type_id " +
-    		"and accounts.currency_id = currencies.currency_id " +
-    		"and accounts.org_id =organizations.org_id order by 2" 
+    		"where accounts.acc_type_id = account_types.id " +
+    		"and accounts.currency_id = currencies.id " +
+    		"and accounts.org_id =organizations.id order by 2" 
     		);
-    newRecord.add("acc_id:Nazwa organizacji:Symbol konta:Nazwa konta:Opis konta:Waluta:Typ konta");
-    newRecord.add("acc_id:org_id:symbol:name:description:currency_id:acc_type_id");
-    newRecord.add("acc_id:lov_organizations:data:data:data:lov_currencies:lov_account_types");
+    newRecord.add("id:Nazwa organizacji:Symbol konta:Nazwa konta:Opis konta:Waluta:Typ konta");
+    newRecord.add("id:org_id:symbol:name:description:currency_id:acc_type_id");
+    newRecord.add("id:lov_organizations:data:data:data:lov_currencies:lov_account_types");
     newRecord.add("10:10:5:100:100:10:10");
     newRecord.add("accounts");
-    newRecord.add("acc_id");
+    newRecord.add("id");
     newInstance(newRecord);
     
     
     newRecord = new ArrayList<String>();
     newRecord.add("Organizacje");
-    newRecord.add("select org_id, name, description from organizations order by 2");
-    newRecord.add("org_id:Nazwa:Opis");
-    newRecord.add("org_id:name:description");
-    newRecord.add("org_id:data:data");
+    newRecord.add("select id, name, description from organizations order by 2");
+    newRecord.add("id:Nazwa:Opis");
+    newRecord.add("id:name:description");
+    newRecord.add("id:data:data");
     newRecord.add("10:240:240");
     newRecord.add("organizations");
-    newRecord.add("org_id");
+    newRecord.add("id");
     newInstance(newRecord);	
    
 	}
