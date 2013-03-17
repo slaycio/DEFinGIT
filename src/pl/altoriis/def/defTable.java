@@ -8,7 +8,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.*;
 
 class defTable {
-
+    
 	private Table localTable;
 	private Boolean isEdited = false;
 	private static ArrayList<Control> arControl;
@@ -114,15 +114,14 @@ class defTable {
 					
 			for (int z = 0; z < localTable.getColumnCount(); z++) {
 
-				
-				
+				 				
 				if (arMap.get(z) != null) {
 
 					if (arMap.get(z).toString().startsWith("lov")) {
 
 						arControl.add(new Combo(localTable, SWT.NONE));
 
-						arLovs.add(mainWindow.st.lovData(arMap.get(z).toString().substring(4)));
+						arLovs.add(dictTab.st.lovData(arMap.get(z).toString().substring(4)));
 
 						for (int e = 0; e < arLovs.get(arLovs.size() - 1).size(); e++) {
 							((Combo) arControl.get(z)).add(arLovs.get(arLovs.size() - 1).get(e).get(1));
@@ -307,7 +306,7 @@ class defTable {
 			dbCon.updateData(updateData);
 			dbCon.finalize();
 		} else {
-			mainWindow.st.msg("Uwaga!!","Wprowadzono niepoprawne dane. Nale¿y wskazaæ wartoœci we wszystkich listach wyboru");
+			pTools.msg("Uwaga!!","Wprowadzono niepoprawne dane. Nale¿y wskazaæ wartoœci we wszystkich listach wyboru");
 		}
 		clearEditor();
 
@@ -338,7 +337,7 @@ class defTable {
 		Integer s = localTable.getSelectionIndex();
 
 		if (s != null) {
-		
+									
 		deleteData = "delete from " + tableName + " where " + pKeyName + " = " + localTable.getItem(localTable.getSelectionIndex()).getText(0);;
 		
 		db dbCon = new db();
