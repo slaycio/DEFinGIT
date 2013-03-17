@@ -14,10 +14,6 @@ public class db {
 		
 		
 		try {
-			System.out.println(properties.dbType);
-			System.out.println(properties.url);
-			System.out.println(properties.user);
-			System.out.println(properties.password);
 			
 			cn = DriverManager.getConnection(properties.url , properties.user, properties.password);
 			st = cn.createStatement();

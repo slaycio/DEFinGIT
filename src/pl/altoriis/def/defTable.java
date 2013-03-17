@@ -304,7 +304,7 @@ class defTable {
 			dbCon.updateData(updateData);
 			dbCon.finalize();
 		} else {
-			mainWindow.infoBar.setText("Wprowadzono niepoprawne dane. Nale¿y wskazaæ wartoœci we wszystkich listach wyboru");
+			mainWindow.st.msg("Uwaga!!","Wprowadzono niepoprawne dane. Nale¿y wskazaæ wartoœci we wszystkich listach wyboru");
 		}
 		clearEditor();
 

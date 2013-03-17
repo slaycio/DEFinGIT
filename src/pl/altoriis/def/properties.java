@@ -26,13 +26,9 @@ public class properties {
 			Document doc = dBuilder.parse(fXmlFile);
 			doc.getDocumentElement().normalize();
 
-			// System.out.println("Root element :" +
-			// doc.getDocumentElement().getNodeName());
-			
-
+		
 			NodeList nList = doc.getElementsByTagName("database");
-			 System.out.println("dupa"+nList);
-
+			
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 
 				Node nNode = nList.item(temp);
@@ -52,7 +48,6 @@ public class properties {
 						try {
 							Class.forName("org.sqlite.JDBC");
 						} catch (ClassNotFoundException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					url = eElement.getElementsByTagName("url:1").item(0).getTextContent();	
@@ -61,7 +56,6 @@ public class properties {
 						try {
 							Class.forName("com.mysql.jdbc.Driver");
 						} catch (ClassNotFoundException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					url = eElement.getElementsByTagName("url:2").item(0).getTextContent();	

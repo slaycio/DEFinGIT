@@ -60,6 +60,10 @@ public class mainWindow {
 		infoBar.setText("");
 
 	};
+	
+	
+
+	
 
 	private void drawDictTab() {
 
@@ -184,10 +188,12 @@ public class mainWindow {
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnDel) {
 															
-					
-					if (dictTable.deleteLine()) {
-						dictBtnsOff();
+					if (st.yesNo("Skasowaæ rekord ?","Skasowaæ rekord ?")){
+						if (dictTable.deleteLine()) {
+							dictBtnsOff();
+						}	
 					}
+					
 				}
 			}
 		};
@@ -238,15 +244,7 @@ public class mainWindow {
 		
 		ArrayList<ArrayList<String>> dictTableDataTemp = dbCon.getData(st.get().get(indexOf).get(1));
 		//System.out.println(st.get().get(0).get(2));
-		
-		
-		//dictTableDataTemp.add(0,st.retAsArray(st.get().get(indexOf).get(5)));
-		//dictTableDataTemp.add(0,st.retAsArray(st.get().get(indexOf).get(4)));
-		//dictTableDataTemp.add(0,st.retAsArray(st.get().get(indexOf).get(3)));
-		//dictTableDataTemp.add(0,st.retAsArray(st.get().get(indexOf).get(2)));
-		
-	
-		
+				
 		dbCon.finalize();
 		
 		return dictTableDataTemp;

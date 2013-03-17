@@ -6,4 +6,7 @@
 	<data-source id="sqlite_zentus-1363445801116--444421552" provider="generic" driver="sqlite_zentus" name="SQLite - def.db" create-date="1363445801116" save-password="true" show-system-objects="true" read-only="false">
 		<connection server="" database="C:\Dev\eclipse_wrk\DEFinGIT\src\pl\altoriis\def\def.db" url="jdbc:sqlite:C:\Dev\eclipse_wrk\DEFinGIT\src\pl\altoriis\def\def.db" user="" type="dev"/>
 	</data-source>
+	<data-source id="mysql5-1363507480917--291980606" provider="mysql" driver="mysql5" name="MySQL - lupa_def" create-date="1363507480917" save-password="true" show-system-objects="true" read-only="false">
+		<connection host="mysql1.hekko.net.pl" port="3306" server="" database="lupa_def" url="jdbc:mysql://mysql1.hekko.net.pl:3306/lupa_def" user="lupa_def" password="QhUHOhNUVy5l8w==" type="dev"/>
+	</data-source>
 </data-sources>
