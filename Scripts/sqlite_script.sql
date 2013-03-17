@@ -79,10 +79,8 @@ CREATE TABLE schedule_groups (
 
 CREATE TABLE schedule_types (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-    sch_type_chr varchar(1) NOT NULL,
     name varchar(2048) NOT NULL,
     description varchar(2048),
-    active varchar(1) NOT NULL,
     lang varchar(5),
    creation_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
@@ -181,4 +179,8 @@ INSERT INTO accounts (org_id, name, acc_type_id, symbol, description, currency_i
 
 INSERT INTO org_type_asg (org_id, org_type_id) VALUES (1,1);
 INSERT INTO org_type_asg (org_id, org_type_id) VALUES (2,3);
+
+
+--------------------
+select * from currencies;
 

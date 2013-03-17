@@ -69,17 +69,19 @@ class defTable {
 
 	public void populateTable(ArrayList<ArrayList<String>> input) {
 		
-				
+		if (input.size() != 0){
 		System.out.println(input.get(0).size());
+		}
 		
-		for (int a = 0; a < input.get(0).size(); a++) {
+		//for (int a = 0; a < input.get(0).size(); a++) {
+		for (int a = 0; a < arColDesc.size(); a++) {
 			TableColumn tNColumn = new TableColumn(localTable, SWT.NONE);
 		
 			if (a < 1) {
 				tNColumn.setWidth(0);
 			} else {
 			
-				tNColumn.setWidth((localTable.getSize().x / (input.get(0).size()-1))-2);	
+				tNColumn.setWidth((localTable.getSize().x / (arColDesc.size()-1))-2);	
 			}
 	
 			tNColumn.setText(arColDesc.get(a));
@@ -96,6 +98,7 @@ class defTable {
 		localTable.update();
 
 		localTable.setRedraw(true);
+		//}
 	}
 
 	public Boolean addEditor() {

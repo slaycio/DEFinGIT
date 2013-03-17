@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database>
-<type>0</type>
+<type>1</type>
 <url:0>jdbc:postgresql://localhost/DEF</url:0>
 <user:0>postgres</user:0>
 <password:0>1qaz2wsx</password:0>

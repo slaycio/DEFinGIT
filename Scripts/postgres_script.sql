@@ -5,8 +5,8 @@ CREATE SCHEMA public;
 ALTER SCHEMA public OWNER TO postgres;
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
 */
+
 select 1;
 
 
@@ -176,10 +176,8 @@ ALTER SEQUENCE schedule_groups_sgr_id_seq OWNED BY schedule_groups.id;
 
 CREATE TABLE schedule_types (
    	id integer PRIMARY KEY UNIQUE NOT NULL,
-    sch_type_chr character varying(1) NOT NULL,
     name character varying(2048) NOT NULL,
     description character varying(2048),
-    active character varying(1) NOT NULL,
     lang character varying(5),
     creation_date timestamp without time zone DEFAULT now() NOT NULL
 );

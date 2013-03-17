@@ -88,7 +88,7 @@ public class staticData {
     		"from accounts , account_types , currencies , organizations " +
     		"where accounts.acc_type_id = account_types.id " +
     		"and accounts.currency_id = currencies.id " +
-    		"and accounts.org_id =organizations.id order by 2" 
+    		"and accounts.org_id =organizations.id order by 1" 
     		);
     newRecord.add("id:Nazwa organizacji:Symbol konta:Nazwa konta:Opis konta:Waluta:Typ konta");
     newRecord.add("id:org_id:symbol:name:description:currency_id:acc_type_id");
@@ -101,7 +101,7 @@ public class staticData {
     
     newRecord = new ArrayList<String>();
     newRecord.add("Organizacje");
-    newRecord.add("select id, name, description from organizations order by 2");
+    newRecord.add("select id, name, description from organizations order by 1");
     newRecord.add("id:Nazwa:Opis");
     newRecord.add("id:name:description");
     newRecord.add("id:data:data");
@@ -109,7 +109,71 @@ public class staticData {
     newRecord.add("organizations");
     newRecord.add("id");
     newInstance(newRecord);	
+    
+    
+    newRecord = new ArrayList<String>();
+    newRecord.add("Waluty");
+    newRecord.add("select id, name,symbol, description from currencies order by 1");
+    newRecord.add("id:Nazwa:Symbol:Opis");
+    newRecord.add("id:name:symbol:description");
+    newRecord.add("id:data:data:data");
+    newRecord.add("10:240:240:240");
+    newRecord.add("currencies");
+    newRecord.add("id");
+    newInstance(newRecord);	
+    
+    newRecord = new ArrayList<String>();
+    newRecord.add("Typy organizacji");
+    newRecord.add("select id, name,description from organization_types order by 1");
+    newRecord.add("id:Nazwa:Opis");
+    newRecord.add("id:name:description");
+    newRecord.add("id:data:data");
+    newRecord.add("10:240:240");
+    newRecord.add("organization_types");
+    newRecord.add("id");
+    newInstance(newRecord);	
    
+    
+    newRecord = new ArrayList<String>();
+    newRecord.add("Przydzia³ typów organizacji");
+    newRecord.add("select org_type_asg.id, organizations.name ,organization_types.name " +
+    		"from org_type_asg,organization_types ,organizations " +
+    		"where org_type_asg.org_type_id = organization_types.id " +
+    		"and org_type_asg.org_id = organizations.id " +
+    		"order by 2");
+    newRecord.add("id:Organizacja:Typ organizacji");
+    newRecord.add("id:org_id:org_type_id");
+    newRecord.add("id:lov_organizations:lov_organization_types");
+    newRecord.add("10:240:240");
+    newRecord.add("org_type_asg");
+    newRecord.add("id");
+    newInstance(newRecord);	
+
+	
+	    
+    newRecord = new ArrayList<String>();
+    newRecord.add("Typy terminarzy");
+    newRecord.add("select id, name,description from schedule_types order by 1");
+    newRecord.add("id:Nazwa:Opis");
+    newRecord.add("id:name:description");
+    newRecord.add("id:data:data");
+    newRecord.add("10:240:240");
+    newRecord.add("schedule_types");
+    newRecord.add("id");
+    newInstance(newRecord);	
+	
+	
+    newRecord = new ArrayList<String>();
+    newRecord.add("Typy linii");
+    newRecord.add("select id, name,description from trx_types order by 1");
+    newRecord.add("id:Nazwa:Opis");
+    newRecord.add("id:name:description");
+    newRecord.add("id:data:data");
+    newRecord.add("10:240:240");
+    newRecord.add("trx_types");
+    newRecord.add("id");
+    newInstance(newRecord);	
+	
 	}
 	
 public Boolean yesNo(String title, String question){

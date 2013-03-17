@@ -79,10 +79,8 @@ CREATE TABLE schedule_groups (
 
 CREATE TABLE schedule_types (
     id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
-    sch_type_chr varchar(1) NOT NULL,
     name varchar(2048) NOT NULL,
     description varchar(2048),
-    active varchar(1) NOT NULL,
     lang varchar(5),
    creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
