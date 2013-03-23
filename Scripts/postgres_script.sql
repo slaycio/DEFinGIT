@@ -109,7 +109,7 @@ CREATE TABLE organization_types (
     id integer PRIMARY KEY UNIQUE NOT NULL,
     name character varying(2048) NOT NULL,
     description character varying(2048),
-    lang character varying(5) NOT NULL,
+    lang character varying(5),
     creation_date timestamp without time zone DEFAULT now() NOT NULL
 );
 

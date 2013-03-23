@@ -4,26 +4,65 @@ package pl.altoriis.def;
 import java.util.ArrayList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.*;
+
+
+/**
+ * TODO Change editor to self focus with "save changes" popup.
+ * 
+ * 
+ */
 
 class defTable {
     
 	private Table localTable;
 	private Boolean isEdited = false;
-	private static ArrayList<Control> arControl;
-	private static ArrayList<TableEditor> arEditor;
-	private static ArrayList<String> arMap;
-	private static ArrayList<String> arColNames;
-	private static ArrayList<String> arColDesc;
-	private static ArrayList<String> arLn;
-	private static ArrayList<ArrayList<ArrayList<String>>> arLovs;
-	private static String tableName;
-	private static String pKeyName;
+	private Integer isEditedNo;
+	private ArrayList<Control> arControl;
+	private ArrayList<TableEditor> arEditor;
+	private ArrayList<String> arMap;
+	private ArrayList<String> arColNames;
+	private ArrayList<String> arColDesc;
+	private ArrayList<String> arLn;
+	private ArrayList<ArrayList<ArrayList<String>>> arLovs;
+	private String tableName;
+	private String pKeyName;
 
 	public defTable(Composite parent, int style) {
 
 		localTable = new Table(parent, style);
+		
+
+		localTable.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				clearEditor();
+				mainWindow.get().dictTabX.dictUpdateOff();
+			}
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if (isEdited){
+					saveEditor();
+				}
+				
+				clearEditor();
+				if (addEditor()) {
+					mainWindow.get().dictTabX.dictUpdateOn();
+				}
+				
+				
+				//mainWindow.get().dictTabX.dictUpdateOff();
+				
+				
+				
+				
+			}
+		}); // koniec listnera tabeli roboczej
+		
 		
 	}
 	
@@ -36,12 +75,18 @@ class defTable {
 		arColNames = inColNames;
 		arColDesc = inColDesc;
 		arLn = inLn;
-		
+		//arEditor = new ArrayList<TableEditor>();
+		//arControl = new ArrayList<Control>();
 	}
 
 	public void clearTable() {
 
+		if (isEdited){
+			saveEditor();
+		}
+		
 		localTable.setRedraw(false);
+		clearEditor();
 		localTable.removeAll();
 		while (localTable.getColumnCount() > 0) {
 			localTable.getColumns()[0].dispose();
@@ -128,14 +173,14 @@ class defTable {
 						}
 						((Combo) arControl.get(z)).setText(localTable.getItem(s).getText(z));
 
-						((Combo) arControl.get(z)).setBackground(new Color(mainWindow.display, 240, 240, 240));
+						((Combo) arControl.get(z)).setBackground(new Color(mainWindow.get().display, 240, 240, 240));
 
 					} else {
 						arLovs.add(new ArrayList<ArrayList<String>>());
 						arControl.add(new Text(localTable, SWT.NONE));
 						((Text) arControl.get(z)).setText(localTable.getItem(s).getText(z));
 						((Text) arControl.get(z)).setTextLimit(Integer.valueOf(arLn.get(z)));
-						((Text) arControl.get(z)).setBackground(new Color(mainWindow.display, 240, 240, 240));
+						((Text) arControl.get(z)).setBackground(new Color(mainWindow.get().display, 240, 240, 240));
 
 					}
 
@@ -152,10 +197,22 @@ class defTable {
 				arEditor.get(w).grabHorizontal = true;
 				arEditor.get(w).grabVertical = true;
 				arEditor.get(w).setEditor(arControl.get(w), item, w);
+				
+								
+				Listener changedLst = new Listener() {
+					@Override
+					public void handleEvent(Event event) {
+						System.out.println("dupa");	
+						isEdited = true;
+						isEditedNo = localTable.getSelectionIndex();
+					}
+				};
+								
+				arControl.get(w).addListener(SWT.Modify, changedLst);
+				
 
 			}
 
-			isEdited = true;
 
 			return true;
 
@@ -172,6 +229,11 @@ class defTable {
 		String updateData = new String();
 		Integer nullCounter = 0;
 	
+		if (isEditedNo!=null){
+		if (pTools.yesNo("Zapisaæ zmiany ?", "Zapisaæ zmiany ?"))
+			{
+		
+		
 		for (int i = 1; i < localTable.getColumnCount(); i++) {
 			
 			String curText = new String();
@@ -186,11 +248,11 @@ class defTable {
 
 			}
 
-			localTable.getItem(localTable.getSelectionIndex()).setText(i, curText);
+			localTable.getItem(isEditedNo).setText(i, curText);
 
 		}
 
-		int l = localTable.getSelectionIndex();
+		int l = isEditedNo;
 
 		if (nullCounter == 0) {
 
@@ -305,24 +367,27 @@ class defTable {
 			db dbCon = new db();
 			dbCon.updateData(updateData);
 			dbCon.finalize();
-		} else {
-			pTools.msg("Uwaga!!","Wprowadzono niepoprawne dane. Nale¿y wskazaæ wartoœci we wszystkich listach wyboru");
+				} else {
+						pTools.msg("Uwaga!!","Wprowadzono niepoprawne dane. Nale¿y wskazaæ wartoœci we wszystkich listach wyboru");
+						}
+			}
 		}
 		clearEditor();
 
 	}
 
 	public void discardNewline() {
-		for (int t = 0; t< localTable.getItemCount();t++)
+		for (int t = 0; t< localTable.getItemCount();t++){
 		if ((localTable.getItem(t).getText(0).length() == 0)) {
 			localTable.getItem(t).dispose();
 		}
-	
+		}
 		
 	}
 
 	public Boolean addLine() {
 
+		clearEditor();
 		new TableItem(localTable, SWT.NONE);
 		localTable.setSelection(localTable.getItemCount() - 1);
 
@@ -337,39 +402,60 @@ class defTable {
 		Integer s = localTable.getSelectionIndex();
 
 		if (s != null) {
-									
-		deleteData = "delete from " + tableName + " where " + pKeyName + " = " + localTable.getItem(localTable.getSelectionIndex()).getText(0);;
-		
-		db dbCon = new db();
-		dbCon.updateData(deleteData);
-		dbCon.finalize();
-		localTable.remove(s);
-		
-			return true;
-		}else 
+						
+				if (localTable.getItem(localTable.getSelectionIndex()).getText(0).length() > 0){	
+				if (pTools.yesNo("Skasowaæ rekord ?","Skasowaæ rekord ?")){
+				deleteData = "delete from " + tableName + " where " + pKeyName + " = " + localTable.getItem(localTable.getSelectionIndex()).getText(0);
+				
+				db dbCon = new db();
+				dbCon.updateData(deleteData);
+				dbCon.finalize();
+				
+				localTable.remove(s);
+				}
+				clearEditor();
+				
+				mainWindow.get().dictTabX.dictBtnsOff();
+				return true;
+				
+				}else {
+					//localTable.remove(s);
+					clearEditor();
+					mainWindow.get().dictTabX.dictBtnsOff();
+					return false;
+							}
+		} else 
 		{
+			
 			return false;
 		}
 	}
 
 	public void clearEditor() {
 
-		if (isEdited) {
-
+		isEdited = false;
+		isEditedNo = null;
+			
+			
+		
 			discardNewline();
+			
+			if (arControl != null){
+				
+			
 			
 			for (int u = 0; u < arControl.size(); u++) {
 				((Control) arControl.get(u)).dispose();
-
 			}
+		
+			
 			for (int y = 0; y < arEditor.size(); y++) {
 				arEditor.get(y).dispose();
-
 			}
 					
-			isEdited = false;
+			
 		}
-
+	
 	}
 
 	public Table get() {

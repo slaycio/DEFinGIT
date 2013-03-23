@@ -38,7 +38,6 @@ public class db {
 			System.out.println(update);	
 			st.executeUpdate(update);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

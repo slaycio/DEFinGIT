@@ -49,7 +49,7 @@ CREATE TABLE organization_types (
     id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
     name varchar(2048) NOT NULL,
     description varchar(2048),
-    lang varchar(5) NOT NULL,
+    lang varchar(5),
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 

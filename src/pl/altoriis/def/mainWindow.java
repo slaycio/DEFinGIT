@@ -2,7 +2,9 @@ package pl.altoriis.def;
 
 /**
  * TODO 1) Add transactions based on car usage: reference to car, amount of fuel etc. 
- * TODO 2) Home cost focus: ex. TCO, ROI etc. 
+ * TODO 2) Home cost focus: TCO, ROI etc. 
+ * TODO Dynamic resize 
+ * 
  */
 
 
@@ -15,21 +17,24 @@ import swing2swt.layout.BorderLayout;
 
 public class mainWindow {
 	
-	private static TabFolder mainTabFolder;
+	public static mainWindow window;
+	private TabFolder mainTabFolder;
+	public Shell shell;
+	public Point actSize = new Point(1116, 600);
+    public Display display;
+	public Label infoBar;
+	public trxTab trxTabX;
+	public dictTab dictTabX;
 	
-	public static Shell shell;
-	public static Point actSize = new Point(1116, 600);
-    public static Display display;
-	public static Label infoBar;
 
-	
-
-
+	public static mainWindow get() {
+		return window;
+	}
 	
 	private void setMainMenu() {
 
 		/**
-		 * Main menu. For now it is useless. But it shows the idea. Change it.
+		 * TODO Main menu. For now it is useless. But it shows the idea. Change it.
 		 */
 
 		Menu menu = new Menu(shell, SWT.BAR);
@@ -66,7 +71,7 @@ public class mainWindow {
 	private void drawTopPanel() {
 
 		/**
-		 * Top tab. For now it is useless. But it shows the idea. Change it.
+		 * TODO Top tab. For now it is useless. But it shows the idea. Change it.
 		 */
 		Composite top = new Composite(shell, SWT.NONE);
 		top.setLayoutData(BorderLayout.NORTH);
@@ -85,7 +90,7 @@ public class mainWindow {
 	private void drawLeftPanel() {
 
 		/**
-		 * Left tab. For now it is useless. But it shows the idea. Change it.
+		 * TODO Left tab. For now it is useless. But it shows the idea. Change it.
 		 */
 		Composite left = new Composite(shell, SWT.NONE);
 		left.setLayoutData(BorderLayout.WEST);
@@ -144,9 +149,9 @@ public class mainWindow {
 		
 		mainTabFolder = new TabFolder(shell, SWT.NONE);
 		mainTabFolder.setLayoutData(null);
-		//trxTab trxTab = 
+		 trxTabX = 
 				new trxTab (mainTabFolder, SWT.NONE, actSize);
-		//dictTab dictTab = 
+		 dictTabX = 
 				new dictTab(mainTabFolder, SWT.NONE, actSize);	
 		
 	}
@@ -193,7 +198,7 @@ public class mainWindow {
 		 * @param args
 		 */
 		try {
-			mainWindow window = new mainWindow();
+			window = new mainWindow();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();

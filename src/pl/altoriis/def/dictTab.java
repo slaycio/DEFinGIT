@@ -12,14 +12,14 @@ public class dictTab {
 	
 	private TabItem localTabItem;
 	public static staticData st = new staticData();
-	private static Button dictBtnUpdate;
-	private static Button dictBtnSave;
-	private static Button dictBtnDiscard;
-	private static Button dictBtnAdd;
-	private static Button dictBtnDel;
-	private static Combo dictCmbSelector;
-	private static Composite dictDataComp;
-	private static defTable dictTable;
+	//private  Button dictBtnUpdate;
+	private  Button dictBtnSave;
+	private  Button dictBtnDiscard;
+	private  Button dictBtnAdd;
+	private  Button dictBtnDel;
+	private  Combo dictCmbSelector;
+	private  Composite dictDataComp;
+	private  defTable dictTable;
 	
 	
 	
@@ -47,18 +47,18 @@ public class dictTab {
 	
 	
 	
-	private void dictUpdateOn() {
-		dictBtnUpdate.setEnabled(false);
+	public  void dictUpdateOn() {
+		//dictBtnUpdate.setEnabled(false);
 		dictBtnSave.setEnabled(true);
 		dictBtnDiscard.setEnabled(true);
-		dictBtnAdd.setEnabled(false);
+		dictBtnAdd.setEnabled(true);
 		dictCmbSelector.setEnabled(false);
-		dictBtnDel.setEnabled(false);
+		dictBtnDel.setEnabled(true);
 		
 	};
 
-	private void dictUpdateOff() {
-		dictBtnUpdate.setEnabled(true);
+	public  void dictUpdateOff() {
+		//dictBtnUpdate.setEnabled(true);
 		dictBtnSave.setEnabled(false);
 		dictBtnDiscard.setEnabled(false);
 		dictBtnAdd.setEnabled(true);
@@ -67,13 +67,14 @@ public class dictTab {
 
 	};
 
-	private void dictBtnsOff() {
-		dictBtnUpdate.setEnabled(false);
+	public  void dictBtnsOff() {
+		//dictBtnUpdate.setEnabled(false);
 		dictBtnSave.setEnabled(false);
 		dictBtnDiscard.setEnabled(false);
 		dictBtnAdd.setEnabled(true);
 		dictCmbSelector.setEnabled(true);
 		dictBtnDel.setEnabled(false);
+		
 		
 
 	};
@@ -99,9 +100,10 @@ private void drawDictTab() {
 		Composite buttons = new Composite(dictDataComp, SWT.NONE);
 		buttons.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		dictBtnUpdate = new Button(buttons, SWT.NONE);
-		dictBtnUpdate.setSize(60, 25);
-		dictBtnUpdate.setText("Update");
+		//dictBtnUpdate = new Button(buttons, SWT.NONE);
+		//dictBtnUpdate.setSize(60, 25);
+		//dictBtnUpdate.setText("Update");
+		//dictBtnUpdate.setVisible(false);
 
 		dictBtnSave = new Button(buttons, SWT.NONE);
 		dictBtnSave.setSize(60, 25);
@@ -120,8 +122,9 @@ private void drawDictTab() {
 		dictBtnDel.setText("Delete");
 				
 		dictBtnsOff();
+		dictBtnAdd.setEnabled(false);
 
-		Listener dictUpdateBtnListener = new Listener() {
+		/*Listener dictUpdateBtnListener = new Listener() {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnUpdate) {
@@ -132,7 +135,7 @@ private void drawDictTab() {
 			}
 		};
 		dictBtnUpdate.addListener(SWT.Selection, dictUpdateBtnListener);
-
+		 */
 		Listener dictSaveBtnListener = new Listener() {
 			@Override
 			public void handleEvent(Event event) {
@@ -192,10 +195,10 @@ private void drawDictTab() {
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnDel) {
 													
-					if (pTools.yesNo("Skasowaæ rekord ?","Skasowaæ rekord ?")){
+					
 						if (dictTable.deleteLine()) {
 							dictBtnsOff();
-						}	
+							
 					}
 					
 				}
@@ -208,7 +211,7 @@ private void drawDictTab() {
 		dictCmbSelector.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-			
+				dictTable.clearTable();
 				
 				dictBtnsOff();
 				Integer tempIndex = dictCmbSelector.getSelectionIndex();
@@ -221,7 +224,7 @@ private void drawDictTab() {
 						st.retAsArray(st.get().get(tempIndex).get(5)));
 				dictTable.populateTable(getDictTableData(tempIndex));
 				
-			
+			/*
 				dictTable.get().addSelectionListener(new SelectionListener() {
 					@Override
 					public void widgetDefaultSelected(SelectionEvent arg0) {
@@ -234,7 +237,7 @@ private void drawDictTab() {
 						dictTable.clearEditor();
 						dictUpdateOff();
 					}
-				}); // koniec listnera tabeli roboczej
+				}); // koniec listnera tabeli roboczej */
 				
 			}
 		}); // koniec listenera comboboxa
