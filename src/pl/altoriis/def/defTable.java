@@ -27,6 +27,7 @@ class defTable {
 	private ArrayList<String> arColNames;
 	private ArrayList<String> arColDesc;
 	private ArrayList<String> arLn;
+	private ArrayList<TableColumn> arTc;
 	private ArrayList<ArrayList<ArrayList<String>>> arLovs;
 	private String tableName;
 	private String pKeyName;
@@ -35,7 +36,12 @@ class defTable {
 
 		localTable = new Table(parent, style);
 		
+		//localTable.setBounds(mainWindow.get().shell.getClientArea());
 
+		localTable.setHeaderVisible(true);
+		localTable.setLinesVisible(true);
+		
+		
 		localTable.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
@@ -68,12 +74,16 @@ class defTable {
 	
 	public void red(){
 		
-	
-		mainWindow.get().dictTabX.dictDataComp.setSize(500, 600);
-	for (int e=0;e < localTable.getColumns().length; e++) {
-		localTable.getColumns()[e].setWidth(mainWindow.get().dictTabX.dictDataComp.getSize().x/2);
-	}
 		
+		if (arTc != null){
+
+		//System.out.println(mainWindow.get().shell.getClientArea().width);
+	for (int e=0;e < arTc.size(); e++) {
+		arTc.get(e).setWidth(mainWindow.get().shell.getClientArea().width/arTc.size());
+	}
+	
+	
+		}
 		
 		
 	}
@@ -130,18 +140,26 @@ class defTable {
 		System.out.println(input.get(0).size());
 		}
 		
-		//for (int a = 0; a < input.get(0).size(); a++) {
-		for (int a = 0; a < arColDesc.size(); a++) {
-			TableColumn tNColumn = new TableColumn(localTable, SWT.NONE);
+		arTc = new ArrayList<TableColumn>();
 		
+
+		for (int a = 0; a < arColDesc.size(); a++) {
+			
+			arTc.add(new TableColumn(localTable, SWT.NONE));
+			
+			/*
 			if (a < 1) {
-				tNColumn.setWidth(0);
+				arTc.get(a).setWidth(0);
 			} else {
 			
-				tNColumn.setWidth((localTable.getSize().x / (arColDesc.size()-1))-2);	
-			}
+			//	arTc.get(a).setWidth((localTable.getSize().x / (arColDesc.size()-1))-2);	
+				//arTc.get(a).setWidth((mainWindow.get().shell.getClientArea().width / (arColDesc.size()-1))-2);	
+				arTc.get(a).setWidth(mainWindow.get().shell.getClientArea().width/arTc.size());
+				
+			}*/
 	
-			tNColumn.setText(arColDesc.get(a));
+			
+			arTc.get(a).setText(arColDesc.get(a));
 
 		}
 		// by³o 4
@@ -152,6 +170,7 @@ class defTable {
 			}
 		}
 
+		red();
 		localTable.update();
 
 		localTable.setRedraw(true);

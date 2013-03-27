@@ -53,7 +53,8 @@ public class dictTab {
 		dictBtnSave.setEnabled(true);
 		dictBtnDiscard.setEnabled(true);
 		dictBtnAdd.setEnabled(true);
-		dictCmbSelector.setEnabled(false);
+		//dictCmbSelector.setEnabled(false);
+		//dictCmbSelector.setEnabled(true);
 		dictBtnDel.setEnabled(true);
 		
 	};
@@ -63,7 +64,8 @@ public class dictTab {
 		dictBtnSave.setEnabled(false);
 		dictBtnDiscard.setEnabled(false);
 		dictBtnAdd.setEnabled(true);
-		dictCmbSelector.setEnabled(true);
+		//dictCmbSelector.setEnabled(true);
+
 		dictBtnDel.setEnabled(true);
 
 	};
@@ -73,7 +75,7 @@ public class dictTab {
 		dictBtnSave.setEnabled(false);
 		dictBtnDiscard.setEnabled(false);
 		dictBtnAdd.setEnabled(true);
-		dictCmbSelector.setEnabled(true);
+		//dictCmbSelector.setEnabled(true);
 		dictBtnDel.setEnabled(false);
 		
 		
@@ -94,9 +96,8 @@ private void drawDictTab() {
 		}
 
 		dictTable = new defTable(dictDataComp, SWT.BORDER | SWT.FULL_SELECTION);
-		dictTable.get().setLayoutData(new RowData(dictDataComp.getSize().x, dictDataComp.getSize().y - 230));
-		dictTable.get().setHeaderVisible(true);
-		dictTable.get().setLinesVisible(true);
+		//dictTable.get().setLayoutData(new RowData(dictDataComp.getSize().x, dictDataComp.getSize().y - 230));
+		
 
 		Composite buttons = new Composite(dictDataComp, SWT.NONE);
 		buttons.setLayout(new FillLayout(SWT.HORIZONTAL));

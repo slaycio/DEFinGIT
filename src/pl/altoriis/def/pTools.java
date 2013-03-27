@@ -12,7 +12,7 @@ public static Boolean yesNo(String title, String question){
 		
 		int style = SWT.ICON_QUESTION | SWT.YES | SWT.NO;
 
-		MessageBox dialogTemp = new MessageBox(mainWindow.shell, style);
+		MessageBox dialogTemp = new MessageBox(mainWindow.get().shell, style);
 
 		dialogTemp.setText(title);
 
@@ -29,7 +29,7 @@ public static void msg(String title, String question){
 		
 		int style = SWT.ICON_ERROR | SWT.OK ;
 
-		MessageBox dialogTemp = new MessageBox(mainWindow.shell, style);
+		MessageBox dialogTemp = new MessageBox(mainWindow.get().shell, style);
 
 		dialogTemp.setText(title);
 

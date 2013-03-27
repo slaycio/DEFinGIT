@@ -19,7 +19,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 public class mainWindow {
 	
 	public static mainWindow window;
-	public static Shell shell;
+	public Shell shell;
 	public TabFolder mainTabFolder;
 	public Point actSize = new Point(1116, 600);
     public Display display;
@@ -136,9 +136,9 @@ public class mainWindow {
 				
 			
 
-				dictTabX.dictDataComp.setSize(actSize);
-				dictTabX.dictDataComp.setRedraw(true);
-				dictTabX.dictDataComp.update();
+				//dictTabX.dictDataComp.setSize(actSize);
+				//dictTabX.dictDataComp.setRedraw(true);
+				//dictTabX.dictDataComp.update();
 				dictTabX.dictTable.red();
 				//dictTabX.dictTable.get().setLayoutData(new RowData(actSize));
 				//dictTabX.dictTable.get().redraw(); 
