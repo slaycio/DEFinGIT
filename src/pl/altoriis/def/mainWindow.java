@@ -13,8 +13,8 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
-
 import swing2swt.layout.BorderLayout;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class mainWindow {
 	
@@ -175,6 +175,7 @@ public class mainWindow {
 
 		display = Display.getDefault();
 		shell = new Shell();
+		shell.setImage(SWTResourceManager.getImage(mainWindow.class, "/pl/altoriis/def/DivineIntervention.jpg"));
 		shell.setLocation(20, 20);
 		shell.setMinimumSize(actSize);
 		shell.setSize(actSize);
