@@ -19,7 +19,7 @@ public class properties {
 
 		try {
 
-			File fXmlFile = new File("src/pl/altoriis/def/properties.xml");
+			File fXmlFile = new File("./def.xml");
 
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

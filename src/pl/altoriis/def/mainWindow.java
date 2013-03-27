@@ -13,13 +13,14 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
+
 import swing2swt.layout.BorderLayout;
 
 public class mainWindow {
 	
 	public static mainWindow window;
-	private TabFolder mainTabFolder;
-	public Shell shell;
+	public static Shell shell;
+	public TabFolder mainTabFolder;
 	public Point actSize = new Point(1116, 600);
     public Display display;
 	public Label infoBar;
@@ -131,8 +132,18 @@ public class mainWindow {
 			public void handleEvent(Event e) {
 				Rectangle rect = shell.getClientArea();
 				actSize = new Point(rect.width, rect.height);
-				label_1.setText(Integer.toString(actSize.x));
+				//label_1.setText(Integer.toString(actSize.x));
+				
+			
 
+				dictTabX.dictDataComp.setSize(actSize);
+				dictTabX.dictDataComp.setRedraw(true);
+				dictTabX.dictDataComp.update();
+				dictTabX.dictTable.red();
+				//dictTabX.dictTable.get().setLayoutData(new RowData(actSize));
+				//dictTabX.dictTable.get().redraw(); 
+				label_1.setText(Integer.toString(dictTabX.dictDataComp.getSize().x));
+				
 			}
 		});
 		/**
@@ -149,6 +160,7 @@ public class mainWindow {
 		
 		mainTabFolder = new TabFolder(shell, SWT.NONE);
 		mainTabFolder.setLayoutData(null);
+		//mainTabFolder.setSize(size);
 		 trxTabX = 
 				new trxTab (mainTabFolder, SWT.NONE, actSize);
 		 dictTabX = 
@@ -164,7 +176,7 @@ public class mainWindow {
 		display = Display.getDefault();
 		shell = new Shell();
 		shell.setLocation(20, 20);
-		shell.setMinimumSize(new Point(200, 200));
+		shell.setMinimumSize(actSize);
 		shell.setSize(actSize);
 		shell.setText("DEF");
 		shell.setLayout(new BorderLayout(5, 5));

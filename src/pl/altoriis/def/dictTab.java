@@ -18,8 +18,8 @@ public class dictTab {
 	private  Button dictBtnAdd;
 	private  Button dictBtnDel;
 	private  Combo dictCmbSelector;
-	private  Composite dictDataComp;
-	private  defTable dictTable;
+	public  Composite dictDataComp;
+	public defTable dictTable;
 	
 	
 	
@@ -38,9 +38,10 @@ public class dictTab {
 		localTabItem.setText("S³owniki");
 		dictDataComp = new Composite(parent, SWT.NONE);
 		localTabItem.setControl(dictDataComp);
-		RowLayout rl_composite = new RowLayout(SWT.VERTICAL);
-		dictDataComp.setLayout(rl_composite);
+		RowLayout rlComposite = new RowLayout(SWT.VERTICAL);
+		dictDataComp.setLayout(rlComposite);
 		dictDataComp.setSize(setSize.x - 200, setSize.y);
+		//dictDataComp.setBounds(mainWindow.shell.getClientArea());
 		drawDictTab();
 		
 	}
@@ -100,11 +101,7 @@ private void drawDictTab() {
 		Composite buttons = new Composite(dictDataComp, SWT.NONE);
 		buttons.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		//dictBtnUpdate = new Button(buttons, SWT.NONE);
-		//dictBtnUpdate.setSize(60, 25);
-		//dictBtnUpdate.setText("Update");
-		//dictBtnUpdate.setVisible(false);
-
+		
 		dictBtnSave = new Button(buttons, SWT.NONE);
 		dictBtnSave.setSize(60, 25);
 		dictBtnSave.setText("Save");
@@ -124,18 +121,7 @@ private void drawDictTab() {
 		dictBtnsOff();
 		dictBtnAdd.setEnabled(false);
 
-		/*Listener dictUpdateBtnListener = new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				if (event.widget == dictBtnUpdate) {
-					if (dictTable.addEditor()) {
-						dictUpdateOn();
-					}
-				}
-			}
-		};
-		dictBtnUpdate.addListener(SWT.Selection, dictUpdateBtnListener);
-		 */
+		
 		Listener dictSaveBtnListener = new Listener() {
 			@Override
 			public void handleEvent(Event event) {
@@ -224,21 +210,7 @@ private void drawDictTab() {
 						st.retAsArray(st.get().get(tempIndex).get(5)));
 				dictTable.populateTable(getDictTableData(tempIndex));
 				
-			/*
-				dictTable.get().addSelectionListener(new SelectionListener() {
-					@Override
-					public void widgetDefaultSelected(SelectionEvent arg0) {
-						dictTable.clearEditor();
-						dictUpdateOff();
-					}
-
-					@Override
-					public void widgetSelected(SelectionEvent arg0) {
-						dictTable.clearEditor();
-						dictUpdateOff();
-					}
-				}); // koniec listnera tabeli roboczej */
-				
+							
 			}
 		}); // koniec listenera comboboxa
 

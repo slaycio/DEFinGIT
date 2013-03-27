@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.*;
 
 
 /**
- * TODO Change editor to self focus with "save changes" popup.
+ * DONE TODO Change editor to self focus with "save changes" popup.
  * 
  * 
  */
@@ -62,6 +62,18 @@ class defTable {
 				
 			}
 		}); // koniec listnera tabeli roboczej
+		
+		
+	}
+	
+	public void red(){
+		
+	
+		mainWindow.get().dictTabX.dictDataComp.setSize(500, 600);
+	for (int e=0;e < localTable.getColumns().length; e++) {
+		localTable.getColumns()[e].setWidth(mainWindow.get().dictTabX.dictDataComp.getSize().x/2);
+	}
+		
 		
 		
 	}
