@@ -52,7 +52,7 @@ public class trxTab {
 		trxCmbSelector.add("abcd");
 		
 
-		defTable trxTable = new defTable(trxDataComp, SWT.BORDER | SWT.FULL_SELECTION);
+		defTable trxTable = new defTable(trxDataComp, SWT.BORDER | SWT.FULL_SELECTION,170,150);
 		trxTable.get().setLayoutData(new RowData(trxDataComp.getSize().x, trxDataComp.getSize().y - 230));
 		trxTable.get().setHeaderVisible(true);
 		trxTable.get().setLinesVisible(true);

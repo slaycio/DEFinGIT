@@ -7,15 +7,14 @@ import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.*;
 
 
 /**
  * DONE TODO Change editor to self focus with "save changes" popup.
- * TODO New line without button.
- * TODO buttons on top of table
- * 
+ * TODO New line without button. ????
+ * DONE TODO buttons on top of table
+ * TODO data refresh is visible - fix it.
  * 
  */
 
@@ -34,22 +33,19 @@ class defTable {
 	private ArrayList<ArrayList<ArrayList<String>>> arLovs;
 	private String tableName;
 	private String pKeyName;
-	//private Composite localComp; 
+	private Integer shellMarginX;
+	private Integer shellMarginY;
+	
+	
 
-	public defTable(Composite parent, int style) {
-
-		//localComp = new Composite(parent,SWT.NONE);
-		//localComp.setSize(localComp.getParent().getSize().x, localComp.getParent().getSize().y-50);
+	public defTable(Composite parent, int style, int inShellMarginX, int inShellMarginY) {
+		shellMarginX = inShellMarginX;
+		shellMarginY = inShellMarginY;
+		
 		localTable = new Table(parent, style);
-		
-		
-		//localComp.setLayout(new FillLayout());
-		//localComp.layout();
-		//localTable.setBounds(mainWindow.get().shell.getClientArea());
-
 		localTable.setHeaderVisible(true);
 		localTable.setLinesVisible(true);
-		
+		defResize();
 		
 		
 		
@@ -57,7 +53,8 @@ class defTable {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				clearEditor();
-				mainWindow.get().dictTabX.dictUpdateOff();
+				mainWindow.get().dictTabX.dictUpdateOff();  /// TODO TRZEBA WYWALIC TO ODWOLANIE - BUTONY MUSZA SAME SIE SPRWADZAC
+				
 			}
 
 			@Override
@@ -68,15 +65,10 @@ class defTable {
 				
 				clearEditor();
 				if (addEditor()) {
-					mainWindow.get().dictTabX.dictUpdateOn();
+					mainWindow.get().dictTabX.dictUpdateOn(); /// TODO TRZEBA WYWALIC TO ODWOLANIE - BUTONY MUSZA SAME SIE SPRWADZAC
+					
 				}
-				
-				
-				//mainWindow.get().dictTabX.dictUpdateOff();
-				
-				
-				
-				
+
 			}
 		}); // koniec listnera tabeli roboczej
 		
@@ -85,26 +77,14 @@ class defTable {
 	
 	public void defResize(){
 	
-		
+		localTable.setSize(pTools.a2p(localTable.getShell().getClientArea(),shellMarginX,shellMarginY));
+				
 		if (arTc != null){
-
-		System.out.println(localTable.getParent().getParent().getClientArea().width);
-		//System.out.println(localTable.getParent().toString());
-		localTable.setSize(localTable.getParent().getParent().getSize().x-300, localTable.getParent().getParent().getSize().y-300);
-		
-		arTc.get(0).setWidth(0);
-		for (int e=1;e < arTc.size(); e++) {
-	
-		arTc.get(e).setWidth((localTable.getParent().getParent().getClientArea().width-50)/(arTc.size()-1));
-		
-	}
-	
-		
-		
-		
+			arTc.get(0).setWidth(0);
+			for (int e=1;e < arTc.size(); e++) {
+				arTc.get(e).setWidth((localTable.getParent().getParent().getClientArea().width-50)/(arTc.size()-1));
+			}
 		}
-		
-		
 	}
 	
 	public void addMetaData(String inTableName,String inpKeyName,ArrayList<String> inMap ,ArrayList<String> inColNames,ArrayList<String> inColDesc, ArrayList<String> inLn) {
@@ -116,8 +96,6 @@ class defTable {
 		arColNames = inColNames;
 		arColDesc = inColDesc;
 		arLn = inLn;
-		//arEditor = new ArrayList<TableEditor>();
-		//arControl = new ArrayList<Control>();
 	}
 
 	public void clearTable() {
@@ -155,31 +133,11 @@ class defTable {
 
 	public void populateTable(ArrayList<ArrayList<String>> input) {
 		
-		if (input.size() != 0){
-		System.out.println(input.get(0).size());
-		}
-		
 		arTc = new ArrayList<TableColumn>();
 		
-
 		for (int a = 0; a < arColDesc.size(); a++) {
-			
 			arTc.add(new TableColumn(localTable, SWT.NONE));
-			
-			/*
-			if (a < 1) {
-				arTc.get(a).setWidth(0);
-			} else {
-			
-			//	arTc.get(a).setWidth((localTable.getSize().x / (arColDesc.size()-1))-2);	
-				//arTc.get(a).setWidth((mainWindow.get().shell.getClientArea().width / (arColDesc.size()-1))-2);	
-				arTc.get(a).setWidth(mainWindow.get().shell.getClientArea().width/arTc.size());
-				
-			}*/
-	
-			
 			arTc.get(a).setText(arColDesc.get(a));
-
 		}
 		// by³o 4
 		for (int w = 0; w < input.size(); w++) {
@@ -193,11 +151,6 @@ class defTable {
 		localTable.update();
 
 		localTable.setRedraw(true);
-		//localTable.getParent().setSize(localTable.getShell().getSize().x -50, localTable.getShell().getSize().y -200 );
-		//localTable.getParent().layout();
-		//localTable.getParent().setSize(localTable.getParent().getParent().getClientArea().width - 200, localTable.getParent().getParent().getClientArea().height-200);
-		//localTable.setSize(localTable.getParent().getClientArea().width-40,(localTable.getItemCount()+1)*localTable.getItemHeight());
-		System.out.println("tenmonet "+localTable.getParent().getClientArea().width);
 		localTable.getParent().layout();
 		defResize();
 		
@@ -261,7 +214,7 @@ class defTable {
 				Listener changedLst = new Listener() {
 					@Override
 					public void handleEvent(Event event) {
-						System.out.println("dupa");	
+						//System.out.println("ccc");	
 						isEdited = true;
 						isEditedNo = localTable.getSelectionIndex();
 					}

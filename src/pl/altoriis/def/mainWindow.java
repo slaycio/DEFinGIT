@@ -11,7 +11,7 @@ package pl.altoriis.def;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.*;
+//import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import swing2swt.layout.BorderLayout;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -21,7 +21,8 @@ public class mainWindow {
 	public static mainWindow window;
 	public Shell shell;
 	public TabFolder mainTabFolder;
-	public Point actSize = new Point(1116, 600);
+	public Integer mX = 500;
+	public Integer mY = 500;
     public Display display;
 	public Label infoBar;
 	public trxTab trxTabX;
@@ -101,28 +102,28 @@ public class mainWindow {
 		left.setLayout(rl_left);
 
 		Group grpSuma = new Group(left, SWT.NONE);
-		grpSuma.setText("Suma");
+		grpSuma.setText("Shell");
 		grpSuma.setLayoutData(new RowData(100, 25));
 
-		Label lblNewLabel = new Label(grpSuma, SWT.NONE);
-		lblNewLabel.setBounds(10, 18, 55, 15);
+		final Label lblNewLabel = new Label(grpSuma, SWT.NONE);
+		lblNewLabel.setBounds(5, 15, 90, 15);
 		lblNewLabel.setText("5 550,56");
 
 		Group grpEkonto = new Group(left, SWT.NONE);
-		grpEkonto.setText("eKonto");
+		grpEkonto.setText("Tabela");
 		grpEkonto.setLayoutData(new RowData(100, 25));
 
 		final Label label = new Label(grpEkonto, SWT.NONE);
 		label.setText("10 000,00");
-		label.setBounds(10, 18, 55, 15);
+		label.setBounds(5, 15, 90, 15);
 
 		Group grpGotwka = new Group(left, SWT.NONE);
-		grpGotwka.setText("Got\u00F3wka");
+		grpGotwka.setText("Inne");
 		grpGotwka.setLayoutData(new RowData(100, 25));
 
 		final Label label_1 = new Label(grpGotwka, SWT.NONE);
 		label_1.setText("15 004,56");
-		label_1.setBounds(10, 18, 55, 15);
+		label_1.setBounds(5, 15, 90, 15);
 
 		/**
 		 * TODO This is just some debug for resizing. remove it in the future.
@@ -130,19 +131,13 @@ public class mainWindow {
 		shell.addListener(SWT.Resize, new Listener() {
 			@Override
 			public void handleEvent(Event e) {
-				Rectangle rect = shell.getClientArea();
-				actSize = new Point(rect.width, rect.height);
-				//label_1.setText(Integer.toString(actSize.x));
+							
 				
-			
-
-				//dictTabX.dictDataComp.setSize(actSize);
-				//dictTabX.dictDataComp.setRedraw(true);
-				//dictTabX.dictDataComp.update();
 				dictTabX.dictTable.defResize();
-				//dictTabX.dictTable.get().setLayoutData(new RowData(actSize));
-				//dictTabX.dictTable.get().redraw(); 
-				label_1.setText(Integer.toString(dictTabX.dictDataComp.getSize().x));
+				
+				lblNewLabel.setText("w:"+shell.getClientArea().width+" h:"+shell.getClientArea().height);
+				label.setText("w:"+dictTabX.dictTable.get().getSize().x+" h:"+dictTabX.dictTable.get().getSize().y);
+				label_1.setText("w:"+shell.getClientArea().width+" h:"+shell.getClientArea().height);
 				
 			}
 		});
@@ -160,11 +155,11 @@ public class mainWindow {
 		
 		mainTabFolder = new TabFolder(shell, SWT.NONE);
 		mainTabFolder.setLayoutData(null);
-		mainTabFolder.setBounds(0,0,mainTabFolder.getParent().getSize().x-100,mainTabFolder.getParent().getSize().y-100);
-		 trxTabX = 
-				new trxTab (mainTabFolder, SWT.NONE, actSize);
-		 dictTabX = 
-				new dictTab(mainTabFolder, SWT.NONE, actSize);	
+		mainTabFolder.setSize(pTools.a2p(shell.getClientArea(),100,100));
+		//trxTabX = 
+		//		new trxTab (mainTabFolder, SWT.NONE);
+		dictTabX = 
+				new dictTab(mainTabFolder, SWT.NONE);	
 		
 	}
 	
@@ -176,11 +171,8 @@ public class mainWindow {
 		display = Display.getDefault();
 		shell = new Shell();
 		shell.setImage(SWTResourceManager.getImage(mainWindow.class, "/pl/altoriis/def/DivineIntervention.jpg"));
-		//shell.setLocation(50, 50);
-		shell.setMinimumSize(actSize);
-		shell.setBounds(50,50,display.getClientArea().width-100,display.getClientArea().height-100);
-		//shell.setSize(display.getClientArea().width-100,display.getClientArea().height-100);
-		//shell.setSize(actSize);
+		shell.setMinimumSize(1000,600);
+		shell.setBounds(mX/2,mY/2,display.getClientArea().width-mX,display.getClientArea().height-mY);
 		shell.setText("DEF");
 		shell.setLayout(new BorderLayout(5, 5));
 

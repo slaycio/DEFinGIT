@@ -3,26 +3,25 @@ package pl.altoriis.def;
 import java.util.ArrayList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
+
 
 public class dictTab {
 
 	
 	private TabItem localTabItem;
-	public static staticData st = new staticData();
-	//private  Button dictBtnUpdate;
-	private  Button dictBtnSave;
-	private  Button dictBtnDiscard;
-	private  Button dictBtnAdd;
-	private  Button dictBtnDel;
-	private  Combo dictCmbSelector;
-	public  Composite dictDataComp;
-	public defTable dictTable;
+	public 	static staticData st = new staticData();
+	private Button dictBtnSave;
+	private Button dictBtnDiscard;
+	private Button dictBtnAdd;
+	private Button dictBtnDel;
+	private Combo dictCmbSelector;
+	private Composite dictDataComp;
+	public 	defTable dictTable;
 	private Composite dictTblComp;
 	private Composite dictCmbComp;
-	private Composite dictBtnComp;
+	
 	
 	
 	
@@ -35,22 +34,14 @@ public class dictTab {
 	}
 	
 	
-	public dictTab(TabFolder parent, int style , Point setSize) {
+	public dictTab(TabFolder parent, int style) {
 		localTabItem = new TabItem(parent, style);
 		
 		localTabItem.setText("S³owniki");
 		dictDataComp = new Composite(parent, SWT.NONE);
 		localTabItem.setControl(dictDataComp);
-		RowLayout rlComposite = new RowLayout(SWT.VERTICAL);
-		//rlComposite.marginLeft = 20;
-		//rlComposite.marginTop = 20;
-		//rlComposite.justify = true;
-		dictDataComp.setLayout(rlComposite);
-		//dictDataComp.setLayout( new FillLayout(SWT.VERTICAL));
-		//dictDataComp.setSize(setSize.x - 200, setSize.y);
-		dictDataComp.setSize(dictDataComp.getParent().getClientArea().width - 200, dictDataComp.getParent().getClientArea().height-200);
-		//dictDataComp.setBounds(mainWindow.shell.getClientArea());
-		System.out.println("Shell"+dictDataComp.getShell().getSize());
+		dictDataComp.setLayout(new RowLayout(SWT.VERTICAL));
+		//dictDataComp.setSize(pTools.a2p(dictDataComp.getShell().getClientArea(),0,0));
 		drawDictTab();
 		
 	}
@@ -58,33 +49,26 @@ public class dictTab {
 	
 	
 	public  void dictUpdateOn() {
-		//dictBtnUpdate.setEnabled(false);
+		
 		dictBtnSave.setEnabled(true);
 		dictBtnDiscard.setEnabled(true);
 		dictBtnAdd.setEnabled(true);
-		//dictCmbSelector.setEnabled(false);
-		//dictCmbSelector.setEnabled(true);
 		dictBtnDel.setEnabled(true);
 		
 	};
 
 	public  void dictUpdateOff() {
-		//dictBtnUpdate.setEnabled(true);
 		dictBtnSave.setEnabled(false);
 		dictBtnDiscard.setEnabled(false);
 		dictBtnAdd.setEnabled(true);
-		//dictCmbSelector.setEnabled(true);
-
 		dictBtnDel.setEnabled(true);
 
 	};
 
 	public  void dictBtnsOff() {
-		//dictBtnUpdate.setEnabled(false);
 		dictBtnSave.setEnabled(false);
 		dictBtnDiscard.setEnabled(false);
 		dictBtnAdd.setEnabled(true);
-		//dictCmbSelector.setEnabled(true);
 		dictBtnDel.setEnabled(false);
 		
 		
@@ -96,48 +80,63 @@ private void drawDictTab() {
 	
 
 		dictCmbComp = new Composite(dictDataComp, SWT.NONE);
-				
-
+		dictCmbComp.setLayout(new RowLayout(SWT.HORIZONTAL));
 		dictCmbSelector = new Combo(dictCmbComp, SWT.DROP_DOWN);
-		dictCmbSelector.setSize(dictDataComp.getSize().x - 600, 23);
+		
 
 		for (int r = 0; r < st.get().size(); r++) {
 			dictCmbSelector.add(st.get().get(r).get(0));
 		}
 
-		
-		dictTblComp = new Composite(dictDataComp, SWT.NONE);
-		//dictTblComp.setSize(dictTblComp.getParent().getSize().x, dictTblComp.getParent().getSize().y-50);
-		
-		dictTable = new defTable(dictTblComp, SWT.BORDER | SWT.FULL_SELECTION);
-		dictTable.get().setSize(dictTblComp.getParent().getSize().x, dictTblComp.getParent().getSize().y-50);
-		//dictTable.get().setLayoutData(new RowData(dictDataComp.getSize().x, dictDataComp.getSize().y - 230));
-		
-
-		dictBtnComp = new Composite(dictDataComp, SWT.NONE);
-		 dictBtnComp.setSize(dictDataComp.getParent().getClientArea().width - 200, 30);
-		 dictBtnComp.setLayout(new FillLayout(SWT.HORIZONTAL));
-
-		
-		dictBtnSave = new Button(dictBtnComp, SWT.NONE);
+		dictBtnSave = new Button(dictCmbComp, SWT.NONE);
 		dictBtnSave.setSize(60, 25);
 		dictBtnSave.setText("Save");
 
-		dictBtnDiscard = new Button(dictBtnComp, SWT.NONE);
+		dictBtnDiscard = new Button(dictCmbComp, SWT.NONE);
 		dictBtnDiscard.setSize(60, 25);
 		dictBtnDiscard.setText("Discard");
 
-		dictBtnAdd = new Button(dictBtnComp, SWT.NONE);
+		dictBtnAdd = new Button(dictCmbComp, SWT.NONE);
 		dictBtnAdd.setSize(60, 25);
 		dictBtnAdd.setText("New Line");
 		
-		dictBtnDel = new Button(dictBtnComp, SWT.NONE);
+		dictBtnDel = new Button(dictCmbComp, SWT.NONE);
 		dictBtnDel.setSize(60, 25);
 		dictBtnDel.setText("Delete");
-				
+		
+		
+		
+		dictTblComp = new Composite(dictDataComp, SWT.NONE);
+		dictTable = new defTable(dictTblComp, SWT.BORDER | SWT.FULL_SELECTION | SWT.NO_SCROLL, 170,150);
+						
 		dictBtnsOff();
 		dictBtnAdd.setEnabled(false);
 
+		/*MouseListener tableCheck = new MouseListener(){
+
+			@Override
+			public void mouseDoubleClick(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseDown(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+
+			@Override
+			public void mouseUp(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+						
+		};
+		
+		dictDataComp.addMouseListener(tableCheck);*/
+		
 		
 		Listener dictSaveBtnListener = new Listener() {
 			@Override
@@ -197,13 +196,9 @@ private void drawDictTab() {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnDel) {
-													
-					
 						if (dictTable.deleteLine()) {
 							dictBtnsOff();
-							
-					}
-					
+						}
 				}
 			}
 		};
