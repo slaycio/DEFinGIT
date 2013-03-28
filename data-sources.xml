@@ -9,4 +9,7 @@
 	<data-source id="mysql5-1363507480917--291980606" provider="mysql" driver="mysql5" name="MySQL - lupa_def" create-date="1363507480917" save-password="true" show-system-objects="true" read-only="false">
 		<connection host="mysql1.hekko.net.pl" port="3306" server="" database="lupa_def" url="jdbc:mysql://mysql1.hekko.net.pl:3306/lupa_def" user="lupa_def" password="QhUHOhNUVy5l8w==" type="dev"/>
 	</data-source>
+	<data-source id="h2_embedded-1364295051560-356224288" provider="generic" driver="h2_embedded" name="H2 - localhost" create-date="1364295051560" update-date="1364297836504" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="c:\Apps\ta" url="jdbc:h2:c:\Apps\ta" user="" type="dev"/>
+	</data-source>
 </data-sources>

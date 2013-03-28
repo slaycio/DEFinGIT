@@ -7,6 +7,7 @@ import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.*;
 
 
@@ -33,11 +34,17 @@ class defTable {
 	private ArrayList<ArrayList<ArrayList<String>>> arLovs;
 	private String tableName;
 	private String pKeyName;
+	//private Composite localComp; 
 
 	public defTable(Composite parent, int style) {
 
+		//localComp = new Composite(parent,SWT.NONE);
+		//localComp.setSize(localComp.getParent().getSize().x, localComp.getParent().getSize().y-50);
 		localTable = new Table(parent, style);
 		
+		
+		//localComp.setLayout(new FillLayout());
+		//localComp.layout();
 		//localTable.setBounds(mainWindow.get().shell.getClientArea());
 
 		localTable.setHeaderVisible(true);
@@ -81,17 +88,20 @@ class defTable {
 		
 		if (arTc != null){
 
-		System.out.println(localTable.getParent().getClientArea().width);
+		System.out.println(localTable.getParent().getParent().getClientArea().width);
 		//System.out.println(localTable.getParent().toString());
+		localTable.setSize(localTable.getParent().getParent().getSize().x-300, localTable.getParent().getParent().getSize().y-300);
 		
 		arTc.get(0).setWidth(0);
 		for (int e=1;e < arTc.size(); e++) {
 	
-		arTc.get(e).setWidth((localTable.getParent().getClientArea().width-50)/(arTc.size()-1));
+		arTc.get(e).setWidth((localTable.getParent().getParent().getClientArea().width-50)/(arTc.size()-1));
 		
 	}
 	
-	
+		
+		
+		
 		}
 		
 		
@@ -184,7 +194,11 @@ class defTable {
 
 		localTable.setRedraw(true);
 		//localTable.getParent().setSize(localTable.getShell().getSize().x -50, localTable.getShell().getSize().y -200 );
-		localTable.setSize(localTable.getParent().getClientArea().width-40,(localTable.getItemCount()+1)*localTable.getItemHeight());
+		//localTable.getParent().layout();
+		//localTable.getParent().setSize(localTable.getParent().getParent().getClientArea().width - 200, localTable.getParent().getParent().getClientArea().height-200);
+		//localTable.setSize(localTable.getParent().getClientArea().width-40,(localTable.getItemCount()+1)*localTable.getItemHeight());
+		System.out.println("tenmonet "+localTable.getParent().getClientArea().width);
+		localTable.getParent().layout();
 		defResize();
 		
 		

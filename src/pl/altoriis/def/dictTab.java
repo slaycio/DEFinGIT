@@ -20,6 +20,7 @@ public class dictTab {
 	private  Combo dictCmbSelector;
 	public  Composite dictDataComp;
 	public defTable dictTable;
+	private Composite dictTblComp;
 	private Composite dictCmbComp;
 	private Composite dictBtnComp;
 	
@@ -41,7 +42,11 @@ public class dictTab {
 		dictDataComp = new Composite(parent, SWT.NONE);
 		localTabItem.setControl(dictDataComp);
 		RowLayout rlComposite = new RowLayout(SWT.VERTICAL);
+		//rlComposite.marginLeft = 20;
+		//rlComposite.marginTop = 20;
+		//rlComposite.justify = true;
 		dictDataComp.setLayout(rlComposite);
+		//dictDataComp.setLayout( new FillLayout(SWT.VERTICAL));
 		//dictDataComp.setSize(setSize.x - 200, setSize.y);
 		dictDataComp.setSize(dictDataComp.getParent().getClientArea().width - 200, dictDataComp.getParent().getClientArea().height-200);
 		//dictDataComp.setBounds(mainWindow.shell.getClientArea());
@@ -91,6 +96,7 @@ private void drawDictTab() {
 	
 
 		dictCmbComp = new Composite(dictDataComp, SWT.NONE);
+				
 
 		dictCmbSelector = new Combo(dictCmbComp, SWT.DROP_DOWN);
 		dictCmbSelector.setSize(dictDataComp.getSize().x - 600, 23);
@@ -99,11 +105,16 @@ private void drawDictTab() {
 			dictCmbSelector.add(st.get().get(r).get(0));
 		}
 
-		dictTable = new defTable(dictDataComp, SWT.BORDER | SWT.FULL_SELECTION);
+		
+		dictTblComp = new Composite(dictDataComp, SWT.NONE);
+		//dictTblComp.setSize(dictTblComp.getParent().getSize().x, dictTblComp.getParent().getSize().y-50);
+		
+		dictTable = new defTable(dictTblComp, SWT.BORDER | SWT.FULL_SELECTION);
+		dictTable.get().setSize(dictTblComp.getParent().getSize().x, dictTblComp.getParent().getSize().y-50);
 		//dictTable.get().setLayoutData(new RowData(dictDataComp.getSize().x, dictDataComp.getSize().y - 230));
 		
 
-		 dictBtnComp = new Composite(dictDataComp, SWT.NONE);
+		dictBtnComp = new Composite(dictDataComp, SWT.NONE);
 		 dictBtnComp.setSize(dictDataComp.getParent().getClientArea().width - 200, 30);
 		 dictBtnComp.setLayout(new FillLayout(SWT.HORIZONTAL));
 
