@@ -139,7 +139,7 @@ public class mainWindow {
 				//dictTabX.dictDataComp.setSize(actSize);
 				//dictTabX.dictDataComp.setRedraw(true);
 				//dictTabX.dictDataComp.update();
-				dictTabX.dictTable.red();
+				dictTabX.dictTable.defResize();
 				//dictTabX.dictTable.get().setLayoutData(new RowData(actSize));
 				//dictTabX.dictTable.get().redraw(); 
 				label_1.setText(Integer.toString(dictTabX.dictDataComp.getSize().x));
@@ -160,7 +160,7 @@ public class mainWindow {
 		
 		mainTabFolder = new TabFolder(shell, SWT.NONE);
 		mainTabFolder.setLayoutData(null);
-		//mainTabFolder.setSize(size);
+		mainTabFolder.setBounds(0,0,mainTabFolder.getParent().getSize().x-100,mainTabFolder.getParent().getSize().y-100);
 		 trxTabX = 
 				new trxTab (mainTabFolder, SWT.NONE, actSize);
 		 dictTabX = 
@@ -176,9 +176,11 @@ public class mainWindow {
 		display = Display.getDefault();
 		shell = new Shell();
 		shell.setImage(SWTResourceManager.getImage(mainWindow.class, "/pl/altoriis/def/DivineIntervention.jpg"));
-		shell.setLocation(20, 20);
+		//shell.setLocation(50, 50);
 		shell.setMinimumSize(actSize);
-		shell.setSize(actSize);
+		shell.setBounds(50,50,display.getClientArea().width-100,display.getClientArea().height-100);
+		//shell.setSize(display.getClientArea().width-100,display.getClientArea().height-100);
+		//shell.setSize(actSize);
 		shell.setText("DEF");
 		shell.setLayout(new BorderLayout(5, 5));
 

@@ -12,6 +12,8 @@ import org.eclipse.swt.widgets.*;
 
 /**
  * DONE TODO Change editor to self focus with "save changes" popup.
+ * TODO New line without button.
+ * TODO buttons on top of table
  * 
  * 
  */
@@ -40,6 +42,8 @@ class defTable {
 
 		localTable.setHeaderVisible(true);
 		localTable.setLinesVisible(true);
+		
+		
 		
 		
 		localTable.addSelectionListener(new SelectionListener() {
@@ -72,14 +76,19 @@ class defTable {
 		
 	}
 	
-	public void red(){
-		
+	public void defResize(){
+	
 		
 		if (arTc != null){
 
-		//System.out.println(mainWindow.get().shell.getClientArea().width);
-	for (int e=0;e < arTc.size(); e++) {
-		arTc.get(e).setWidth(mainWindow.get().shell.getClientArea().width/arTc.size());
+		System.out.println(localTable.getParent().getClientArea().width);
+		//System.out.println(localTable.getParent().toString());
+		
+		arTc.get(0).setWidth(0);
+		for (int e=1;e < arTc.size(); e++) {
+	
+		arTc.get(e).setWidth((localTable.getParent().getClientArea().width-50)/(arTc.size()-1));
+		
 	}
 	
 	
@@ -170,10 +179,15 @@ class defTable {
 			}
 		}
 
-		red();
+	
 		localTable.update();
 
 		localTable.setRedraw(true);
+		//localTable.getParent().setSize(localTable.getShell().getSize().x -50, localTable.getShell().getSize().y -200 );
+		localTable.setSize(localTable.getParent().getClientArea().width-40,(localTable.getItemCount()+1)*localTable.getItemHeight());
+		defResize();
+		
+		
 		//}
 	}
 

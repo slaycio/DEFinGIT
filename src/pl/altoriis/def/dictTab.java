@@ -20,6 +20,8 @@ public class dictTab {
 	private  Combo dictCmbSelector;
 	public  Composite dictDataComp;
 	public defTable dictTable;
+	private Composite dictCmbComp;
+	private Composite dictBtnComp;
 	
 	
 	
@@ -40,8 +42,10 @@ public class dictTab {
 		localTabItem.setControl(dictDataComp);
 		RowLayout rlComposite = new RowLayout(SWT.VERTICAL);
 		dictDataComp.setLayout(rlComposite);
-		dictDataComp.setSize(setSize.x - 200, setSize.y);
+		//dictDataComp.setSize(setSize.x - 200, setSize.y);
+		dictDataComp.setSize(dictDataComp.getParent().getClientArea().width - 200, dictDataComp.getParent().getClientArea().height-200);
 		//dictDataComp.setBounds(mainWindow.shell.getClientArea());
+		System.out.println("Shell"+dictDataComp.getShell().getSize());
 		drawDictTab();
 		
 	}
@@ -86,10 +90,10 @@ public class dictTab {
 private void drawDictTab() {
 	
 
-		Composite combo_holder = new Composite(dictDataComp, SWT.NONE);
+		dictCmbComp = new Composite(dictDataComp, SWT.NONE);
 
-		dictCmbSelector = new Combo(combo_holder, SWT.DROP_DOWN);
-		dictCmbSelector.setSize(new Point(dictDataComp.getSize().x - 600, 23));
+		dictCmbSelector = new Combo(dictCmbComp, SWT.DROP_DOWN);
+		dictCmbSelector.setSize(dictDataComp.getSize().x - 600, 23);
 
 		for (int r = 0; r < st.get().size(); r++) {
 			dictCmbSelector.add(st.get().get(r).get(0));
@@ -99,23 +103,24 @@ private void drawDictTab() {
 		//dictTable.get().setLayoutData(new RowData(dictDataComp.getSize().x, dictDataComp.getSize().y - 230));
 		
 
-		Composite buttons = new Composite(dictDataComp, SWT.NONE);
-		buttons.setLayout(new FillLayout(SWT.HORIZONTAL));
+		 dictBtnComp = new Composite(dictDataComp, SWT.NONE);
+		 dictBtnComp.setSize(dictDataComp.getParent().getClientArea().width - 200, 30);
+		 dictBtnComp.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		
-		dictBtnSave = new Button(buttons, SWT.NONE);
+		dictBtnSave = new Button(dictBtnComp, SWT.NONE);
 		dictBtnSave.setSize(60, 25);
 		dictBtnSave.setText("Save");
 
-		dictBtnDiscard = new Button(buttons, SWT.NONE);
+		dictBtnDiscard = new Button(dictBtnComp, SWT.NONE);
 		dictBtnDiscard.setSize(60, 25);
 		dictBtnDiscard.setText("Discard");
 
-		dictBtnAdd = new Button(buttons, SWT.NONE);
+		dictBtnAdd = new Button(dictBtnComp, SWT.NONE);
 		dictBtnAdd.setSize(60, 25);
 		dictBtnAdd.setText("New Line");
 		
-		dictBtnDel = new Button(buttons, SWT.NONE);
+		dictBtnDel = new Button(dictBtnComp, SWT.NONE);
 		dictBtnDel.setSize(60, 25);
 		dictBtnDel.setText("Delete");
 				
