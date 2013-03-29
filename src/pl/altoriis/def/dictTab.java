@@ -7,6 +7,7 @@ import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
 
+
 public class dictTab {
 
 	
@@ -188,9 +189,13 @@ private void drawDictTab() {
 		dictDataComp.getShell().addListener(SWT.Resize, new Listener() {
 			@Override
 			public void handleEvent(Event e) {
+				
 				dictTable.defResize();
+				System.out.println("controlResized"); // TODO Trzeba dodaæ jakieœ dodatkowe sprawdzanie po zakoñczonym resize i redraw zrobiæ. ni jest za szybki
 				}
 			});
+				
+			
 		
 		
 		/** -------INITIAL STATE------- */

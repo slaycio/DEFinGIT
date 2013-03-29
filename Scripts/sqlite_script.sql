@@ -183,4 +183,32 @@ INSERT INTO org_type_asg (org_id, org_type_id) VALUES (2,3);
 
 --------------------
 select * from currencies;
+select * from trx_types;
+select * from trx_lines;
+select * from trx_headers;
 
+update trx_headers set sch_id = 2;
+
+
+
+select trx_headers.id,trx_types.name,
+from trx_headers , trx_lines , trx_types
+where trx_lines.trx_id = trx_headers.id
+and trx_headers.trx_type_id= trx_types.id;
+
+
+
+select trx_headers.id,trx_types.name, organizations.name,trx_headers.description, trx_headers.amount
+from trx_headers , trx_types, currencies, organizations
+where trx_headers.trx_type_id= trx_types.id
+and currencies.id = trx_headers.currency_id
+and trx_headers.org_id = organizations.id;
+
+
+select trx_headers.id,trx_types.name, organizations.name,trx_headers.description, trx_headers.amount, trx_headers.trx_date, currencies.name, schedules.name, trx_headers.ex_rate_type, trx_headers.ex_rate, trx_headers.ex_date, trx_headers.status
+	    		from trx_headers , trx_types, currencies, organizations, schedules 
+	    		where trx_headers.trx_type_id= trx_types.id and currencies.id = trx_headers.currency_id and trx_headers.org_id = organizations.id and trx_headers.sch_id = schedules.id
+
+	    		
+	    		
+	    		delete from schedules;

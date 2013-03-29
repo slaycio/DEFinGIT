@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.*;
  * TODO data refresh is visible - fix it.
  * TODO Change table to be more universal with inserts deletes and updates - some attributes of entities used with tables
  * TODO Tables need to respect constraint
+ * TODO tables need to resize to data + scrolls are needed
  * 
  */
 
@@ -80,6 +81,7 @@ public void defResize(){
 				arTc.get(e).setWidth((localTable.getParent().getParent().getClientArea().width-50)/(arTc.size()-1));
 			}
 		}
+		//localTable.update();
 }
 	
 
