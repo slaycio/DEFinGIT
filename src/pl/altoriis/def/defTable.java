@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.*;
  * TODO New line without button. ????
  * TODO data refresh is visible - fix it.
  * TODO Change table to be more universal with inserts deletes and updates - some attributes of entities used with tables
+ * TODO Tables need to respect constraint
  * 
  */
 
@@ -73,7 +74,6 @@ public defTable(Composite parent, int style, int inShellMarginX, int inShellMarg
 public void defResize(){
 	
 		localTable.setSize(pTools.a2p(localTable.getShell().getClientArea(),shellMarginX,shellMarginY));
-		//System.out.println("rrrr");		
 		if (arTc != null){
 			arTc.get(0).setWidth(0);
 			for (int e=1;e < arTc.size(); e++) {
@@ -82,16 +82,19 @@ public void defResize(){
 		}
 }
 	
-public void addMetaData(String inTableName,String inpKeyName,ArrayList<String> inMap ,ArrayList<String> inColNames,ArrayList<String> inColDesc, ArrayList<String> inLn) {
-		
-		clearTable();
-		tableName = inTableName;
-		pKeyName = inpKeyName;
-		arMap = inMap;
-		arColNames = inColNames;
-		arColDesc = inColDesc;
-		arLn = inLn;
+
+public void addMetaData(defMetaData i) {
+	
+	clearTable();
+	tableName = i.inTableName;
+	pKeyName = i.inpKeyName;
+	arMap = i.inMap;
+	arColNames = i.inColNames;
+	arColDesc = i.inColDesc;
+	arLn = i.inLn;
 }
+
+
 
 public void clearTable() {
 
@@ -170,8 +173,8 @@ public Boolean addEditor() {
 					if (arMap.get(z).toString().startsWith("lov")) {
 
 						arControl.add(new Combo(localTable, SWT.NONE));
-
-						arLovs.add(dictTab.st.lovData(arMap.get(z).toString().substring(4)));
+					
+						arLovs.add(sD.lovData(arMap.get(z).toString().substring(4))); 
 
 						for (int e = 0; e < arLovs.get(arLovs.size() - 1).size(); e++) {
 							((Combo) arControl.get(z)).add(arLovs.get(arLovs.size() - 1).get(e).get(1));

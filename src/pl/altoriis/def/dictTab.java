@@ -11,7 +11,6 @@ public class dictTab {
 
 	
 	private TabItem localTabItem;
-	public 	static staticData st = new staticData();
 	private Button dictBtnSave;
 	private Button dictBtnDiscard;
 	private Button dictBtnAdd;
@@ -84,20 +83,14 @@ private void drawDictTab() {
 				
 				dictBtnsOff();
 				Integer tempIndex = dictCmbSelector.getSelectionIndex();
-				dictTable.addMetaData(
-						st.get().get(tempIndex).get(6),
-						st.get().get(tempIndex).get(7),
-						st.retAsArray(st.get().get(tempIndex).get(4)),
-						st.retAsArray(st.get().get(tempIndex).get(3)),
-						st.retAsArray(st.get().get(tempIndex).get(2)),
-						st.retAsArray(st.get().get(tempIndex).get(5)));
+				dictTable.addMetaData(sD.retAsMD("dict",tempIndex));
 				dictTable.populateTable(getDictTableData(tempIndex));
 								
 			}
 		}); 
 		
-		for (int r = 0; r < st.get().size(); r++) {
-			dictCmbSelector.add(st.get().get(r).get(0));
+		for (int r = 0; r < sD.dict().size(); r++) {
+			dictCmbSelector.add(sD.dict().get(r).get(0));
 		}
 
 		
@@ -110,13 +103,7 @@ private void drawDictTab() {
 			public void handleEvent(Event event) {
 				if (event.widget == dictBtnSave) {
 					dictTable.saveEditor();
-					dictTable.addMetaData(
-							st.get().get(dictCmbSelector.getSelectionIndex()).get(6),
-							st.get().get(dictCmbSelector.getSelectionIndex()).get(7),
-							st.retAsArray(st.get().get(dictCmbSelector.getSelectionIndex()).get(4)),
-							st.retAsArray(st.get().get(dictCmbSelector.getSelectionIndex()).get(3)),
-							st.retAsArray(st.get().get(dictCmbSelector.getSelectionIndex()).get(2)),
-							st.retAsArray(st.get().get(dictCmbSelector.getSelectionIndex()).get(5)));
+					dictTable.addMetaData(sD.retAsMD("dict",dictCmbSelector.getSelectionIndex()));
 					dictTable.populateTable(getDictTableData(dictCmbSelector.getSelectionIndex()));
 					dictBtnsOff();
 				}
@@ -215,7 +202,7 @@ private void drawDictTab() {
 private ArrayList<ArrayList<String>> getDictTableData(Integer indexOf){
 		
 		db dbCon = new db();
-		ArrayList<ArrayList<String>> dictTableDataTemp = dbCon.getData(st.get().get(indexOf).get(1));
+		ArrayList<ArrayList<String>> dictTableDataTemp = dbCon.getData(sD.dict().get(indexOf).get(1));
 		dbCon.finalize();
 		return dictTableDataTemp;
 }
