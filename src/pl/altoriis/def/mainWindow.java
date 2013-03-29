@@ -4,30 +4,26 @@ package pl.altoriis.def;
  * TODO 1) Add transactions based on car usage: reference to car, amount of fuel etc. 
  * TODO 2) Home cost focus: TCO, ROI etc. 
  * TODO Dynamic resize 
- * 
  */
 
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.*;
-//import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import swing2swt.layout.BorderLayout;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 public class mainWindow {
 	
+	private String defVer ="alpha 0.01";
 	public static mainWindow window;
 	public Shell shell;
 	public TabFolder mainTabFolder;
 	public Integer mX = 500;
 	public Integer mY = 500;
     public Display display;
-	public Label infoBar;
-	public trxTab trxTabX;
-	public dictTab dictTabX;
-	
+		
 
 	public static mainWindow get() {
 		return window;
@@ -79,15 +75,36 @@ public class mainWindow {
 		top.setLayoutData(BorderLayout.NORTH);
 		top.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Label lblDomowyEkspertFinansowy = new Label(top, SWT.BORDER | SWT.SHADOW_IN | SWT.CENTER);
-		lblDomowyEkspertFinansowy.setText("Domowy Ekspert Finansowy v. 666");
-		infoBar = new Label(top, SWT.BORDER | SWT.CENTER);
-
+		Label lblDomowyEkspertFinansowy = new Label(top, SWT.BORDER | SWT.CENTER);
+		lblDomowyEkspertFinansowy.setText("Domowy Ekspert Finansowy");
+		
 		/**
 		 * End of top tab.
 		 */
 
 	}
+	
+	private void drawBottomPanel() {
+
+		/**
+		 * TODO Bottom tab. For now it is useless. But it shows the idea. Change it.
+		 */
+		Composite Bottom = new Composite(shell, SWT.NONE);
+		Bottom.setLayoutData(BorderLayout.SOUTH);
+		Bottom.setLayout(new FillLayout(SWT.VERTICAL));
+
+		
+		Label tempLbl = new Label(Bottom, SWT.NONE | SWT.RIGHT);
+		//tempLbl.setBackground(new Color(mainWindow.get().display,255,255,255));
+		tempLbl.setText("(c) p.     DEF "+defVer+"   ");
+	
+
+		/**
+		 * End of Bottom tab.
+		 */
+
+	}
+	
 
 	private void drawLeftPanel() {
 
@@ -131,12 +148,9 @@ public class mainWindow {
 		shell.addListener(SWT.Resize, new Listener() {
 			@Override
 			public void handleEvent(Event e) {
-							
-				
-				dictTabX.dictTable.defResize();
 				
 				lblNewLabel.setText("w:"+shell.getClientArea().width+" h:"+shell.getClientArea().height);
-				label.setText("w:"+dictTabX.dictTable.get().getSize().x+" h:"+dictTabX.dictTable.get().getSize().y);
+				label.setText("w:"+shell.getClientArea().width+" h:"+shell.getClientArea().height);
 				label_1.setText("w:"+shell.getClientArea().width+" h:"+shell.getClientArea().height);
 				
 			}
@@ -157,8 +171,8 @@ public class mainWindow {
 		mainTabFolder.setLayoutData(null);
 		mainTabFolder.setSize(pTools.a2p(shell.getClientArea(),100,100));
 		//trxTabX = 
-		//		new trxTab (mainTabFolder, SWT.NONE);
-		dictTabX = 
+				new trxTab (mainTabFolder, SWT.NONE);
+		//dictTabX = 
 				new dictTab(mainTabFolder, SWT.NONE);	
 		
 	}
@@ -179,6 +193,7 @@ public class mainWindow {
 		setMainMenu();
 		drawTopPanel();
 		drawLeftPanel();
+		drawBottomPanel();
 		drawMainPanel();
 			
 		
@@ -201,8 +216,6 @@ public class mainWindow {
 
 		/**
 		 * Launch the application.
-		 * 
-		 * @param args
 		 */
 		try {
 			window = new mainWindow();

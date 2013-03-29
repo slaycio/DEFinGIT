@@ -11,10 +11,10 @@ import org.eclipse.swt.widgets.*;
 
 
 /**
- * DONE TODO Change editor to self focus with "save changes" popup.
+ *
  * TODO New line without button. ????
- * DONE TODO buttons on top of table
  * TODO data refresh is visible - fix it.
+ * TODO Change table to be more universal with inserts deletes and updates - some attributes of entities used with tables
  * 
  */
 
@@ -35,10 +35,12 @@ class defTable {
 	private String pKeyName;
 	private Integer shellMarginX;
 	private Integer shellMarginY;
+	public String tableState = "NEW";   // {NEW ON ED}
+	
 	
 	
 
-	public defTable(Composite parent, int style, int inShellMarginX, int inShellMarginY) {
+public defTable(Composite parent, int style, int inShellMarginX, int inShellMarginY) {
 		shellMarginX = inShellMarginX;
 		shellMarginY = inShellMarginY;
 		
@@ -53,8 +55,6 @@ class defTable {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
 				clearEditor();
-				mainWindow.get().dictTabX.dictUpdateOff();  /// TODO TRZEBA WYWALIC TO ODWOLANIE - BUTONY MUSZA SAME SIE SPRWADZAC
-				
 			}
 
 			@Override
@@ -62,32 +62,27 @@ class defTable {
 				if (isEdited){
 					saveEditor();
 				}
-				
 				clearEditor();
-				if (addEditor()) {
-					mainWindow.get().dictTabX.dictUpdateOn(); /// TODO TRZEBA WYWALIC TO ODWOLANIE - BUTONY MUSZA SAME SIE SPRWADZAC
-					
-				}
-
+				addEditor();
 			}
-		}); // koniec listnera tabeli roboczej
+		}); 
 		
-		
-	}
+				
+}
 	
-	public void defResize(){
+public void defResize(){
 	
 		localTable.setSize(pTools.a2p(localTable.getShell().getClientArea(),shellMarginX,shellMarginY));
-				
+		//System.out.println("rrrr");		
 		if (arTc != null){
 			arTc.get(0).setWidth(0);
 			for (int e=1;e < arTc.size(); e++) {
 				arTc.get(e).setWidth((localTable.getParent().getParent().getClientArea().width-50)/(arTc.size()-1));
 			}
 		}
-	}
+}
 	
-	public void addMetaData(String inTableName,String inpKeyName,ArrayList<String> inMap ,ArrayList<String> inColNames,ArrayList<String> inColDesc, ArrayList<String> inLn) {
+public void addMetaData(String inTableName,String inpKeyName,ArrayList<String> inMap ,ArrayList<String> inColNames,ArrayList<String> inColDesc, ArrayList<String> inLn) {
 		
 		clearTable();
 		tableName = inTableName;
@@ -96,9 +91,9 @@ class defTable {
 		arColNames = inColNames;
 		arColDesc = inColDesc;
 		arLn = inLn;
-	}
+}
 
-	public void clearTable() {
+public void clearTable() {
 
 		if (isEdited){
 			saveEditor();
@@ -129,9 +124,10 @@ class defTable {
 		pKeyName = null;
 		
 		localTable.setRedraw(true);
-	}
+		tableState ="NEW";
+}
 
-	public void populateTable(ArrayList<ArrayList<String>> input) {
+public void populateTable(ArrayList<ArrayList<String>> input) {
 		
 		arTc = new ArrayList<TableColumn>();
 		
@@ -139,7 +135,6 @@ class defTable {
 			arTc.add(new TableColumn(localTable, SWT.NONE));
 			arTc.get(a).setText(arColDesc.get(a));
 		}
-		// by³o 4
 		for (int w = 0; w < input.size(); w++) {
 			TableItem item = new TableItem(localTable, SWT.NONE);
 			for (int g = 0; g < input.get(w).size(); g++) {
@@ -149,16 +144,14 @@ class defTable {
 
 	
 		localTable.update();
-
 		localTable.setRedraw(true);
 		localTable.getParent().layout();
 		defResize();
+		tableState ="ON";
 		
-		
-		//}
-	}
+}
 
-	public Boolean addEditor() {
+public Boolean addEditor() {
 
 		Integer s = localTable.getSelectionIndex();
 
@@ -209,12 +202,10 @@ class defTable {
 				arEditor.get(w).grabHorizontal = true;
 				arEditor.get(w).grabVertical = true;
 				arEditor.get(w).setEditor(arControl.get(w), item, w);
-				
 								
 				Listener changedLst = new Listener() {
 					@Override
 					public void handleEvent(Event event) {
-						//System.out.println("ccc");	
 						isEdited = true;
 						isEditedNo = localTable.getSelectionIndex();
 					}
@@ -222,21 +213,19 @@ class defTable {
 								
 				arControl.get(w).addListener(SWT.Modify, changedLst);
 				
-
 			}
 
-
+			tableState = "ED";
 			return true;
-
+			
 		} else {
 
 			return false;
+			}
 
-		}
+}
 
-	}
-
-	public void saveEditor() {
+public void saveEditor() {
 
 		String updateData = new String();
 		Integer nullCounter = 0;
@@ -309,8 +298,6 @@ class defTable {
 				updateData = updateData + " where " + pKeyName + " = " + localTable.getItem(l).getText(0);
 
 			} else {
-				// TUTAJ INSERT
-
 				updateData = "insert into " + tableName + " (";
 
 				for (int e = 1; e < localTable.getColumnCount(); e++) {
@@ -386,28 +373,26 @@ class defTable {
 		}
 		clearEditor();
 
-	}
+}
 
-	public void discardNewline() {
+public void discardNewline() {
 		for (int t = 0; t< localTable.getItemCount();t++){
-		if ((localTable.getItem(t).getText(0).length() == 0)) {
-			localTable.getItem(t).dispose();
-		}
+			if ((localTable.getItem(t).getText(0).length() == 0)) {
+				localTable.getItem(t).dispose();
+			}
 		}
 		
-	}
+}
 
-	public Boolean addLine() {
+public Boolean addLine() {
 
 		clearEditor();
 		new TableItem(localTable, SWT.NONE);
 		localTable.setSelection(localTable.getItemCount() - 1);
-
 		return addEditor();
-
-	}
+}
 	
-	public boolean deleteLine(){
+public boolean deleteLine(){
 		
 		String deleteData = new String();
 		
@@ -426,28 +411,22 @@ class defTable {
 				localTable.remove(s);
 				}
 				clearEditor();
-				
-				mainWindow.get().dictTabX.dictBtnsOff();
 				return true;
 				
 				}else {
-					//localTable.remove(s);
 					clearEditor();
-					mainWindow.get().dictTabX.dictBtnsOff();
 					return false;
-							}
-		} else 
-		{
-			
+				}
+		} else{
 			return false;
 		}
-	}
+}
 
-	public void clearEditor() {
+public void clearEditor() {
 
 		isEdited = false;
 		isEditedNo = null;
-			
+		tableState ="ON";	
 			
 		
 			discardNewline();
@@ -468,14 +447,14 @@ class defTable {
 			
 		}
 	
-	}
+}
 
-	public Table get() {
+public Table get() {
 		return localTable;
-	}
+}
 
-	public void set(Table localTable) {
+public void set(Table localTable) {
 		this.localTable = localTable;
-	}
+}
 
 }

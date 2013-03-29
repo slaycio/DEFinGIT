@@ -11,7 +11,7 @@ class pTools {
 
 public static Point a2p(Rectangle inArea, Integer xMinus, Integer yMinus){
 	
-return 	new Point(inArea.width-xMinus,inArea.height-yMinus);
+		return 	new Point(inArea.width-xMinus,inArea.height-yMinus);
 	
 }
 	
