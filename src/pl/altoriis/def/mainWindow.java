@@ -169,7 +169,7 @@ public class mainWindow {
 		
 		mainTabFolder = new TabFolder(shell, SWT.NONE);
 		mainTabFolder.setLayoutData(null);
-		mainTabFolder.setSize(pTools.a2p(shell.getClientArea(),100,100));
+		mainTabFolder.setSize(sD.a2p(shell.getClientArea(),100,100));
 		//trxTabX = 
 				new trxTab (mainTabFolder, SWT.NONE);
 		//dictTabX = 

@@ -73,7 +73,7 @@ public defTable(Composite parent, int style, int inShellMarginX, int inShellMarg
 	
 public void defResize(){
 	
-		localTable.setSize(pTools.a2p(localTable.getShell().getClientArea(),shellMarginX,shellMarginY));
+		localTable.setSize(sD.a2p(localTable.getShell().getClientArea(),shellMarginX,shellMarginY));
 		if (arTc != null){
 			arTc.get(0).setWidth(0);
 			for (int e=1;e < arTc.size(); e++) {
@@ -234,7 +234,7 @@ public void saveEditor() {
 		Integer nullCounter = 0;
 	
 		if (isEditedNo!=null){
-		if (pTools.yesNo("Zapisaæ zmiany ?", "Zapisaæ zmiany ?"))
+		if (sD.yesNo("Zapisaæ zmiany ?", "Zapisaæ zmiany ?"))
 			{
 		
 		
@@ -370,7 +370,7 @@ public void saveEditor() {
 			dbCon.updateData(updateData);
 			dbCon.finalize();
 				} else {
-						pTools.msg("Uwaga!!","Wprowadzono niepoprawne dane. Nale¿y wskazaæ wartoœci we wszystkich listach wyboru");
+						sD.msg("Uwaga!!","Wprowadzono niepoprawne dane. Nale¿y wskazaæ wartoœci we wszystkich listach wyboru");
 						}
 			}
 		}
@@ -404,7 +404,7 @@ public boolean deleteLine(){
 		if (s != null) {
 						
 				if (localTable.getItem(localTable.getSelectionIndex()).getText(0).length() > 0){	
-				if (pTools.yesNo("Skasowaæ rekord ?","Skasowaæ rekord ?")){
+				if (sD.yesNo("Skasowaæ rekord ?","Skasowaæ rekord ?")){
 				deleteData = "delete from " + tableName + " where " + pKeyName + " = " + localTable.getItem(localTable.getSelectionIndex()).getText(0);
 				
 				db dbCon = new db();
