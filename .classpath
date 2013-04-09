@@ -22,5 +22,9 @@
 	<classpathentry kind="lib" path="C:/Dev/eclipse/plugins/org.eclipse.text_3.5.200.v20120523-1310.jar" sourcepath="C:/Dev/eclipse/plugins/org.eclipse.text_3.5.200.v20120523-1310.jar"/>
 	<classpathentry kind="lib" path="C:/Dev/eclipse/plugins/org.eclipse.ui.forms_3.5.200.v20120705-114351.jar" sourcepath="C:/Dev/eclipse/plugins/org.eclipse.ui.forms_3.5.200.v20120705-114351.jar"/>
 	<classpathentry kind="lib" path="C:/Dev/eclipse/plugins/org.eclipse.ui.workbench_3.103.1.v20120906-120042.jar" sourcepath="C:/Dev/eclipse/plugins/org.eclipse.ui.workbench_3.103.1.v20120906-120042.jar"/>
+	<classpathentry kind="lib" path="C:/Dev/eclipse_wrk/DEFinGIT/ormlite-core-4.45.jar"/>
+	<classpathentry kind="lib" path="C:/Dev/eclipse_wrk/DEFinGIT/ormlite-core-4.45-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Dev/eclipse_wrk/DEFinGIT/ormlite-jdbc-4.45.jar"/>
+	<classpathentry kind="lib" path="C:/Dev/eclipse_wrk/DEFinGIT/ormlite-jdbc-4.45-javadoc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

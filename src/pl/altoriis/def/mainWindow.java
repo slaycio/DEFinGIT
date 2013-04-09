@@ -7,12 +7,20 @@ package pl.altoriis.def;
  */
 
 
+import java.sql.SQLException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
 import swing2swt.layout.BorderLayout;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 
 public class mainWindow {
 	
@@ -217,6 +225,7 @@ public class mainWindow {
 		/**
 		 * Launch the application.
 		 */
+		ormTest();
 		try {
 			window = new mainWindow();
 			window.open();
@@ -224,4 +233,47 @@ public class mainWindow {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void ormTest(){
+	
+		  try {
+		  // this uses h2 by default but change to match your database
+        String databaseUrl = "jdbc:sqlite:./def.db";
+        // create a connection source to our database
+        ConnectionSource connectionSource =
+            new JdbcConnectionSource(databaseUrl);
+
+        // instantiate the dao
+        Dao<pClass, String> accountDao =
+            DaoManager.createDao(connectionSource, pClass.class);
+
+        // if you need to create the 'accounts' table make this call
+      
+			TableUtils.createTable(connectionSource, pClass.class);
+			
+			 pClass account = new pClass();
+		        account.setName("Jim Coakley");
+
+		        // persist the account object to the database
+		        accountDao.create(account);
+
+		        // retrieve the account from the database by its id field (name)
+		        pClass account2 = accountDao.queryForId("Jim Coakley");
+		        System.out.println("Account: " + account2.getName());
+
+		        // close the connection source
+		        connectionSource.close();
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+					
+			
+		}
+		  
+		 
+		  
+	}
+	
 }
