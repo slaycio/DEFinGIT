@@ -1,4 +1,3 @@
-
 CREATE TABLE account_types (
     id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL UNIQUE,
     name varchar(2048) NOT NULL,
@@ -168,7 +167,7 @@ INSERT INTO organization_types (name, description, lang) VALUES ('Kontrahent','K
 
 
 INSERT INTO organizations ( name, description) VALUES ('mBank','mBank');
-INSERT INTO organizations ( name, description) VALUES ('Paweł Kosmólski','Paweł Kosmólski');
+INSERT INTO organizations ( name, description) VALUES ('Jan Nowak','Jan Nowak');
 
 
 
