@@ -417,7 +417,7 @@ SELECT pg_catalog.setval('organization_types_org_type_id_seq', 4, true);
 
 
 INSERT INTO organizations ( name, description) VALUES ('mBank','mBank');
-INSERT INTO organizations ( name, description) VALUES ('Paweł Kosmólski','Paweł Kosmólski');
+INSERT INTO organizations ( name, description) VALUES ('gfhfgh','fgh');
 
 
 SELECT pg_catalog.setval('organizations_org_id_seq', 2, true);
